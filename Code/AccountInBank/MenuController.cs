@@ -1,14 +1,29 @@
 ﻿#region Using
 
+using System;
 using System.Drawing;
+using System.Threading;
 using GTA;
 
 #endregion
 
 namespace AccountInBank
 {
-    internal static class MenuController
+    internal class MenuController
     {
+        private readonly Bank _bank;
+        private readonly Player _player;
+        private readonly Script _script;
+
+        public MenuController( Bank bank, Player player, Script script )
+        {
+            this._bank = bank;
+            this._player = player;
+            this._script = script;
+        }
+
+        #region Static
+
         public static Point MenuPositioning( int menuWidth, int menuHeight )
         {
             int width = 1280, height = 720;
@@ -23,15 +38,72 @@ namespace AccountInBank
             menu.HasFooter = false;
         }
 
-        public static Menu GetBankMenu()
+        #endregion
+
+        private void ShowMenu( Menu menu )
+        {
+            this._script.View.AddMenu( menu );
+            this._script.View.MenuPosition = MenuPositioning( menu.Width, menu.ItemHeight );
+        }
+
+        /// <summary>
+        /// Closes all menu and displays main bank menu
+        /// </summary>
+        /// <param name="delay"></param>
+        private void CloseAndShowMainMenu( int delay )
+        {
+            var thread = new Thread( () =>
+            {
+                Thread.Sleep( delay );
+                this._script.View.CloseAllMenus();
+                this.ShowBankMenu();
+            } ) { Priority = ThreadPriority.Lowest };
+            thread.Start();
+        }
+
+        public void ShowBankMenu()
         {
             var menu = new Menu( "ATM Menu", new MenuItem[]
             {
-                new MenuButton( "Deposit", () => { } ),
+                new MenuButton( "Deposit", this.DepositMenuClick ),
                 new MenuButton( "Withdrawal", () => { } ),
             } );
             SetColors( menu );
-            return menu;
+            this.ShowMenu( menu );
+        }
+
+        private void DepositMenuClick()
+        {
+            string value = Game.GetUserInput( "Enter value...", 9 );
+            int deposit;
+            if ( int.TryParse( value, out deposit ) )
+            {
+                UI.ShowSubtitle( deposit.ToString(), 2000 );
+                var label = new MenuLabel( "Success!" );
+                var color = Color.LimeGreen;
+                try
+                {
+                    this._bank.DepositMoney( this._player, deposit );
+                }
+                catch ( Exception exception )
+                {
+                    color = Color.Red;
+                    label.Caption = exception.Message;
+                }
+                var menu = new Menu( "Status", new MenuItem[]
+                {
+                    label
+                } )
+                {
+                    HeaderColor = color,
+                    UnselectedItemColor = color,
+                    SelectedItemColor = color,
+                    HasFooter = false
+                };
+                menu.Width += 10;
+                this.ShowMenu( menu );
+                this.CloseAndShowMainMenu( 2000 );
+            }
         }
     }
 }

@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="AccountInBank.cs" />
     <Compile Include="ATM.cs" />
+    <Compile Include="Bank.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="MenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

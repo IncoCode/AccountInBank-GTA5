@@ -3,7 +3,6 @@
 using System.Linq;
 using System.Windows.Forms;
 using GTA;
-using Menu = GTA.Menu;
 
 #endregion
 
@@ -15,6 +14,8 @@ namespace AccountInBank
         private readonly Player _player;
         private readonly Ped _playerPed;
         private readonly ATM[] _atmList;
+        private readonly Bank _bank;
+        private readonly MenuController _menuController;
 
         public AccountInBank()
         {
@@ -22,12 +23,8 @@ namespace AccountInBank
             this._player = Game.Player;
             this._playerPed = this._player.Character;
             this._atmList = Helper.GetAllATMs();
-        }
-
-        private void ShowMenu( Menu menu )
-        {
-            this.View.AddMenu( menu );
-            this.View.MenuPosition = MenuController.MenuPositioning( menu.Width, menu.ItemHeight );
+            this._bank = new Bank( this.Settings );
+            this._menuController = new MenuController( this._bank, this._player, this );
         }
 
         private void OnKeyDown( object sender, KeyEventArgs e )
@@ -58,8 +55,7 @@ namespace AccountInBank
                     this._nearestATM.Dispose();
                     this._nearestATM = null;
                 }
-                Menu menu = MenuController.GetBankMenu();
-                this.ShowMenu( menu );
+                this._menuController.ShowBankMenu();
             }
         }
     }
