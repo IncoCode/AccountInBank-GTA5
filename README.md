@@ -1,7 +1,7 @@
 # AccountInBank-GTA5
 [![Build Status](https://ci.appveyor.com/api/projects/status/bm28vepxi85dmqn5/branch/master?svg=true)](https://ci.appveyor.com/project/IncoCode/accountinbank-gta5)
 
-===**__Still WIP__**.
+###**__Still WIP__**.
 
 This script lets you store ~~stolen~~ your money in bank account and earn interest (0.1% per day by default).
 
