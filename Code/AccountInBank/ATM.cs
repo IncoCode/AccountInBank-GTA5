@@ -3,7 +3,6 @@
 using System;
 using GTA;
 using GTA.Math;
-using GTA.Native;
 
 #endregion
 
@@ -30,7 +29,7 @@ namespace AccountInBank
         public void CreateBlip()
         {
             this.Blip = World.CreateBlip( this.Position );
-            Function.Call( Hash.SET_BLIP_SPRITE, this.Blip.Handle, 108 ); // dollar sprite
+            this.Blip.Sprite = 108; // dollar sprite
             this.Blip.Color = BlipColor.Green;
             this.Blip.ShowRoute = true;
         }

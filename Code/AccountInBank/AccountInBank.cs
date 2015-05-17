@@ -13,7 +13,7 @@ namespace AccountInBank
         private ATM _nearestATM = null;
         private readonly Player _player;
         private readonly Ped _playerPed;
-        private ATM[] _atmList;
+        private readonly ATM[] _atmList;
 
         public AccountInBank()
         {
