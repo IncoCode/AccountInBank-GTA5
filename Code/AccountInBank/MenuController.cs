@@ -9,6 +9,12 @@ using GTA;
 
 namespace AccountInBank
 {
+    internal enum ATMBalanceAction
+    {
+        Deposit,
+        Withdrawal
+    }
+
     internal class MenuController
     {
         private readonly Bank _bank;
@@ -65,9 +71,9 @@ namespace AccountInBank
         {
             var label = new MenuLabel( status );
             var menu = new Menu( "Status", new MenuItem[]
-                {
-                    label
-                } )
+            {
+                label
+            } )
             {
                 HeaderColor = color,
                 UnselectedItemColor = color,
@@ -82,33 +88,47 @@ namespace AccountInBank
         {
             var menu = new Menu( "ATM Menu", new MenuItem[]
             {
-                new MenuButton( "Deposit", this.DepositMenuClick ),
-                new MenuButton( "Withdrawal", () => { } ),
+                new MenuButton( "Deposit", () => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit ); } ),
+                new MenuButton( "Withdrawal", () => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal ); } ),
             } );
             SetColors( menu );
             this.ShowMenu( menu );
         }
 
-        private void DepositMenuClick()
+        private void ATMBalanceActionMenuClick( ATMBalanceAction action )
         {
-            string value = Game.GetUserInput( "Enter value...", 9 );
+            string valueS = Game.GetUserInput( "Enter value...", 9 );
             int deposit;
-            if ( int.TryParse( value, out deposit ) )
+            string status = "Incorrect value!";
+            Color color = Color.Red;
+            if ( int.TryParse( valueS, out deposit ) )
             {
-                string status = "Success!";
-                var color = Color.LimeGreen;
+                status = "Success!";
+                color = Color.LimeGreen;
                 try
                 {
-                    this._bank.DepositMoney( this._player, deposit );
+                    switch ( action )
+                    {
+                        case ATMBalanceAction.Deposit:
+                            this._bank.DepositMoney( this._player, deposit );
+                            break;
+
+                        case ATMBalanceAction.Withdrawal:
+                            this._bank.WithdrawalMoney( this._player, deposit );
+                            break;
+
+                        default:
+                            return;
+                    }
                 }
                 catch ( Exception exception )
                 {
                     color = Color.Red;
                     status = exception.Message;
                 }
-                this.ShowOperationStatusMenu( status, color );
-                this.CloseAndShowMainMenu( 2000 );
             }
+            this.ShowOperationStatusMenu( status, color );
+            this.CloseAndShowMainMenu( 2000 );
         }
     }
 }
