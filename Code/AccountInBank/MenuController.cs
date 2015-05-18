@@ -36,7 +36,7 @@ namespace AccountInBank
             return new Point( width / 2 - menuWidth / 2, height / 2 - menuHeight / 2 );
         }
 
-        private static void SetColors( Menu menu )
+        private static void SetDefaultColors( Menu menu )
         {
             menu.HeaderColor = Color.FromArgb( 69, 146, 153 );
             menu.UnselectedItemColor = Color.FromArgb( 79, 188, 198 );
@@ -67,7 +67,8 @@ namespace AccountInBank
             thread.Start();
         }
 
-        private void ShowOperationStatusMenu( string status, Color color )
+        private void ShowOperationStatusMenu( string status, bool autoClose = false, int autoCloseDelay = 2000,
+            Color? headerColor = null, Color? unselectedColor = null, Color? selectedColor = null )
         {
             var label = new MenuLabel( status );
             var menu = new Menu( "Status", new MenuItem[]
@@ -75,23 +76,46 @@ namespace AccountInBank
                 label
             } )
             {
-                HeaderColor = color,
-                UnselectedItemColor = color,
-                SelectedItemColor = color,
                 HasFooter = false
             };
+            SetDefaultColors( menu );
+            if ( headerColor != null )
+            {
+                menu.HeaderColor = (Color)headerColor;
+            }
+            if ( unselectedColor != null )
+            {
+                menu.UnselectedItemColor = (Color)unselectedColor;
+            }
+            if ( selectedColor != null )
+            {
+                menu.SelectedItemColor = (Color)selectedColor;
+            }
             menu.Width += 10;
             this.ShowMenu( menu );
+            if ( autoClose )
+            {
+                this.CloseAndShowMainMenu( autoCloseDelay );
+            }
+        }
+
+        private void ShowOperationStatusMenu( string status, bool autoClose = false, int autoCloseDelay = 2000,
+            Color? allColor = null )
+        {
+            this.ShowOperationStatusMenu( status, autoClose, autoCloseDelay, allColor, allColor, allColor );
         }
 
         public void ShowBankMenu()
         {
             var menu = new Menu( "ATM Menu", new MenuItem[]
             {
+                new MenuButton( "Show balance",
+                    () => { this.ShowOperationStatusMenu( "Balance: " + this._bank.Balance, true, 3000, null ); } ),
                 new MenuButton( "Deposit", () => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit ); } ),
                 new MenuButton( "Withdrawal", () => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal ); } ),
+                new MenuButton( "Close", () => { this._script.View.CloseAllMenus(); } ),
             } );
-            SetColors( menu );
+            SetDefaultColors( menu );
             this.ShowMenu( menu );
         }
 
@@ -127,8 +151,7 @@ namespace AccountInBank
                     status = exception.Message;
                 }
             }
-            this.ShowOperationStatusMenu( status, color );
-            this.CloseAndShowMainMenu( 2000 );
+            this.ShowOperationStatusMenu( status, true, 2000, color );
         }
     }
 }
