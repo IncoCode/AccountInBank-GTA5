@@ -23,3 +23,7 @@ How to install
 --------------
 
 Place the .dll file into your "**scripts**" folder, located in the main GTA V directory. If it doesn't exist, create it.
+
+Known issues
+--------------
+Don't type numbers using your numpad. Sometimes it's works incorrect (i.e. it's does not work at all).
