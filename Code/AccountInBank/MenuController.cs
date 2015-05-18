@@ -61,6 +61,23 @@ namespace AccountInBank
             thread.Start();
         }
 
+        private void ShowOperationStatusMenu( string status, Color color )
+        {
+            var label = new MenuLabel( status );
+            var menu = new Menu( "Status", new MenuItem[]
+                {
+                    label
+                } )
+            {
+                HeaderColor = color,
+                UnselectedItemColor = color,
+                SelectedItemColor = color,
+                HasFooter = false
+            };
+            menu.Width += 10;
+            this.ShowMenu( menu );
+        }
+
         public void ShowBankMenu()
         {
             var menu = new Menu( "ATM Menu", new MenuItem[]
@@ -78,8 +95,7 @@ namespace AccountInBank
             int deposit;
             if ( int.TryParse( value, out deposit ) )
             {
-                UI.ShowSubtitle( deposit.ToString(), 2000 );
-                var label = new MenuLabel( "Success!" );
+                string status = "Success!";
                 var color = Color.LimeGreen;
                 try
                 {
@@ -88,20 +104,9 @@ namespace AccountInBank
                 catch ( Exception exception )
                 {
                     color = Color.Red;
-                    label.Caption = exception.Message;
+                    status = exception.Message;
                 }
-                var menu = new Menu( "Status", new MenuItem[]
-                {
-                    label
-                } )
-                {
-                    HeaderColor = color,
-                    UnselectedItemColor = color,
-                    SelectedItemColor = color,
-                    HasFooter = false
-                };
-                menu.Width += 10;
-                this.ShowMenu( menu );
+                this.ShowOperationStatusMenu( status, color );
                 this.CloseAndShowMainMenu( 2000 );
             }
         }
