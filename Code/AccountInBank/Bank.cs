@@ -2,6 +2,7 @@
 
 using System;
 using GTA;
+using Ini;
 
 #endregion
 
@@ -11,7 +12,7 @@ namespace AccountInBank
     {
         private int _balance = 0;
         private double _percentsPerDay = 0.1;
-        private readonly ScriptSettings _settings;
+        private readonly IniFile _settings;
 
         #region Fields
 
@@ -27,7 +28,7 @@ namespace AccountInBank
 
         #endregion
 
-        public Bank( ScriptSettings settings )
+        public Bank( IniFile settings )
         {
             this._settings = settings;
             this.LoadSettings();
@@ -57,14 +58,14 @@ namespace AccountInBank
 
         private void SaveSettings()
         {
-            this._settings.SetValue( "Bank", "Balance", this._balance );
-            this._settings.SetValue( "Bank", "PercentsPerDay", this._percentsPerDay );
+            this._settings.Write( "Balance", this._balance, "Bank" );
+            this._settings.Write( "PercentsPerDay", this._percentsPerDay, "Bank" );
         }
 
         private void LoadSettings()
         {
-            this._balance = this._settings.GetValue( "Bank", "Balance", 0 );
-            this._percentsPerDay = this._settings.GetValue( "Bank", "PercentsPerDay", 0.1 );
+            this._balance = this._settings.Read( "Balance", "Bank", 0 );
+            this._percentsPerDay = this._settings.Read( "PercentsPerDay", "Bank", 0.1 );
         }
     }
 }

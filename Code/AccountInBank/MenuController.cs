@@ -30,7 +30,7 @@ namespace AccountInBank
 
         #region Static
 
-        public static Point MenuPositioning( int menuWidth, int menuHeight )
+        private static Point MenuPositioning( int menuWidth, int menuHeight )
         {
             int width = 1280, height = 720;
             return new Point( width / 2 - menuWidth / 2, height / 2 - menuHeight / 2 );
@@ -79,17 +79,17 @@ namespace AccountInBank
                 HasFooter = false
             };
             SetDefaultColors( menu );
-            if ( headerColor != null )
+            if ( headerColor.HasValue )
             {
-                menu.HeaderColor = (Color)headerColor;
+                menu.HeaderColor = headerColor.Value;
             }
-            if ( unselectedColor != null )
+            if ( unselectedColor.HasValue )
             {
-                menu.UnselectedItemColor = (Color)unselectedColor;
+                menu.UnselectedItemColor = unselectedColor.Value;
             }
-            if ( selectedColor != null )
+            if ( selectedColor.HasValue )
             {
-                menu.SelectedItemColor = (Color)selectedColor;
+                menu.SelectedItemColor = selectedColor.Value;
             }
             menu.Width += 10;
             this.ShowMenu( menu );
