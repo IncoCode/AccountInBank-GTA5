@@ -1,8 +1,6 @@
 ﻿#region Using
 
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Forms;
 using GTA;
 using Ini;
@@ -26,7 +24,7 @@ namespace AccountInBank
             this.KeyDown += this.OnKeyDown;
             this._player = Game.Player;
             this._playerPed = this._player.Character;
-            _settings = new IniFile( "scripts\\AccountInBank.ini" );
+            this._settings = new IniFile( "scripts\\AccountInBank.ini" );
             this._atmList = Helper.GetAllATMs();
             this._bank = new Bank( this._settings );
             this._menuController = new MenuController( this._bank, this._player, this );
