@@ -113,7 +113,11 @@ namespace AccountInBank
                     () => { this.ShowOperationStatusMenu( "Balance: " + this._bank.Balance, true, 3000, null ); } ),
                 new MenuButton( "Deposit", () => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit ); } ),
                 new MenuButton( "Withdrawal", () => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal ); } ),
-                new MenuButton( "Close", () => { this._script.View.CloseAllMenus(); } ),
+                new MenuButton( "Close", () =>
+                {
+                    this._script.View.CloseAllMenus();
+                    this._player.CanControlCharacter = true;
+                } ),
             } );
             SetDefaultColors( menu );
             this.ShowMenu( menu );

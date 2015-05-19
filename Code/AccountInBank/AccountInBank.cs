@@ -1,5 +1,6 @@
 ﻿#region Using
 
+using System;
 using System.Linq;
 using System.Windows.Forms;
 using GTA;
@@ -58,6 +59,14 @@ namespace AccountInBank
                     this._nearestATM.Dispose();
                     this._nearestATM = null;
                 }
+                this._player.CanControlCharacter = false;
+                this._player.Character.Task.SlideToCoord( nearATM.Position, nearATM.Heading );
+                do
+                {
+                    Wait( 200 );
+                }
+                while ( Math.Abs( this._player.Character.Velocity.X ) + Math.Abs( this._player.Character.Velocity.Y ) >
+                        0 || (int)this._player.Character.Heading != (int)nearATM.Heading );
                 this._menuController.ShowBankMenu();
             }
         }
