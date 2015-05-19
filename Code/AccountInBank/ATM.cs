@@ -10,9 +10,9 @@ namespace AccountInBank
 {
     internal class ATM : IDisposable
     {
-        public float Heading { get; set; }
-        public Vector3 Position { get; set; }
-        public Blip Blip { get; set; }
+        public float Heading { get; private set; }
+        public Vector3 Position { get; private set; }
+        public Blip Blip { get; private set; }
 
         private bool _disposed;
 

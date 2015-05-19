@@ -23,12 +23,20 @@ namespace AccountInBank
         public AccountInBank()
         {
             this.KeyDown += this.OnKeyDown;
+            this.Interval = 1000;
+            this.Tick += this.AccountInBank_Tick;
+
             this._player = Game.Player;
             this._playerPed = this._player.Character;
             this._settings = new IniFile( "scripts\\AccountInBank.ini" );
             this._atmList = Helper.GetAllATMs();
             this._bank = new Bank( this._settings );
             this._menuController = new MenuController( this._bank, this._player, this );
+        }
+
+        private void AccountInBank_Tick( object sender, EventArgs e )
+        {
+            this._bank.AccrueInterest();
         }
 
         private void OnKeyDown( object sender, KeyEventArgs e )

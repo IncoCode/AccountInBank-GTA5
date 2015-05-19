@@ -48,7 +48,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="IniFile">
@@ -71,6 +71,7 @@
     <Compile Include="AccountInBank.cs" />
     <Compile Include="ATM.cs" />
     <Compile Include="Bank.cs" />
+    <Compile Include="GTADate.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="MenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

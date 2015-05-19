@@ -10,9 +10,10 @@ namespace AccountInBank
 {
     internal class Bank
     {
-        private int _balance = 0;
+        private int _balance;
         private double _percentsPerDay = 0.1;
         private readonly IniFile _settings;
+        private GTADate _interestDate;
 
         #region Fields
 
@@ -56,16 +57,31 @@ namespace AccountInBank
             this.SaveSettings();
         }
 
+        public void AccrueInterest()
+        {
+            GTADate currDate = Helper.GetCurrentDate();
+            if ( this._interestDate >= currDate )
+            {
+                return;
+            }
+            this._balance = this._balance + (int)Math.Round( this._balance * this._percentsPerDay );
+            this._interestDate = currDate;
+            this.SaveSettings();
+        }
+
         private void SaveSettings()
         {
             this._settings.Write( "Balance", this._balance, "Bank" );
             this._settings.Write( "PercentsPerDay", this._percentsPerDay, "Bank" );
+            this._settings.Write( "InterestDate", this._interestDate.ToString(), "Bank" );
         }
 
         private void LoadSettings()
         {
             this._balance = this._settings.Read( "Balance", "Bank", 0 );
             this._percentsPerDay = this._settings.Read( "PercentsPerDay", "Bank", 0.1 );
+            this._interestDate =
+                GTADate.Parse( this._settings.Read( "InterestDate", "Bank", Helper.GetCurrentDate().ToString() ) );
         }
     }
 }

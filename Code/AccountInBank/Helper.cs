@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using GTA.Math;
+using GTA.Native;
 
 #endregion
 
@@ -79,6 +80,18 @@ namespace AccountInBank
                 }
             }
             return nearestAtm;
+        }
+
+        /// <summary>
+        /// Returns current game date
+        /// </summary>
+        /// <returns></returns>
+        public static GTADate GetCurrentDate()
+        {
+            int day = Function.Call<int>( Hash.GET_CLOCK_DAY_OF_MONTH );
+            int month = Function.Call<int>( Hash.GET_CLOCK_MONTH );
+            int year = Function.Call<int>( Hash.GET_CLOCK_YEAR );
+            return new GTADate( year, month, day );
         }
     }
 }
