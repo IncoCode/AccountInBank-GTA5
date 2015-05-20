@@ -1,6 +1,7 @@
 ﻿#region Using
 
 using System;
+using System.Collections.Generic;
 using GTA;
 using Ini;
 
@@ -10,16 +11,19 @@ namespace AccountInBank
 {
     internal class Bank
     {
-        private int _balance;
         private double _percentsPerDay = 0.1;
         private readonly IniFile _settings;
-        private GTADate _interestDate;
+        private readonly Dictionary<int, BankAccount> _balances;
 
         #region Fields
 
         public int Balance
         {
-            get { return this._balance; }
+            get
+            {
+                int playerIndex = Helper.GetPlayerIndex();
+                return playerIndex > 3 ? 0 : this._balances[ playerIndex ].Balance;
+            }
         }
 
         public double PercentsPerDay
@@ -32,6 +36,7 @@ namespace AccountInBank
         public Bank( IniFile settings )
         {
             this._settings = settings;
+            this._balances = new Dictionary<int, BankAccount>();
             this.LoadSettings();
         }
 
@@ -41,49 +46,75 @@ namespace AccountInBank
             {
                 throw new Exception( "Not enough money!" );
             }
+            int playerIndex = Helper.GetPlayerIndex();
+            if ( playerIndex > 3 )
+            {
+                throw new Exception( "Wrong player index!" );
+            }
             player.Money -= deposit;
-            this._balance += deposit;
+            this._balances[ playerIndex ].Balance += deposit;
             this.SaveSettings();
         }
 
         public void WithdrawalMoney( Player player, int value )
         {
-            if ( value < 1 || value > this._balance )
+            int playerIndex = Helper.GetPlayerIndex();
+            if ( playerIndex > 3 )
+            {
+                throw new Exception( "Wrong player index!" );
+            }
+            if ( value < 1 || value > this._balances[ playerIndex ].Balance )
             {
                 throw new Exception( "Wrong value!" );
             }
             player.Money += value;
-            this._balance -= value;
+            this._balances[ playerIndex ].Balance -= value;
             this.SaveSettings();
         }
 
         public void AccrueInterest()
         {
             GTADate currDate = Helper.GetCurrentDate();
-            if ( this._interestDate >= currDate )
+            for ( int i = 1; i <= 3; i++ )
             {
-                return;
+                BankAccount account = this._balances[ i ];
+                if ( account.InterestDate >= currDate )
+                {
+                    return;
+                }
+                int interest = (int)Math.Round( account.Balance * this._percentsPerDay );
+                account.Balance = account.Balance + interest;
+                account.InterestDate = currDate;
+                if ( Helper.GetPlayerIndex() == i )
+                {
+                    UI.Notify( "Interest accrued: $" + interest );
+                }
             }
-            int interest = (int)Math.Round( this._balance * this._percentsPerDay );
-            this._balance = this._balance + interest;
-            this._interestDate = currDate;
-            UI.Notify( "Interest accrued: $" + interest );
             this.SaveSettings();
         }
 
         private void SaveSettings()
         {
-            this._settings.Write( "Balance", this._balance, "Bank" );
+            for ( int i = 1; i <= 3; i++ )
+            {
+                BankAccount account = this._balances[ i ];
+                this._settings.Write( "Balance" + i, account.Balance, "Bank" );
+                this._settings.Write( "InterestDate" + i, account.InterestDate.ToString(), "Bank" );
+            }
             this._settings.Write( "PercentsPerDay", this._percentsPerDay, "Bank" );
-            this._settings.Write( "InterestDate", this._interestDate.ToString(), "Bank" );
         }
 
         private void LoadSettings()
         {
-            this._balance = this._settings.Read( "Balance", "Bank", 0 );
+            this._balances.Clear();
+            for ( int i = 1; i <= 3; i++ )
+            {
+                int balance = this._settings.Read( "Balance" + i, "Bank", 0 );
+                GTADate interestDate =
+                    GTADate.Parse( this._settings.Read( "InterestDate" + i, "Bank", Helper.GetCurrentDate().ToString() ) );
+                this._balances[ i ] = new BankAccount( balance, interestDate );
+            }
             this._percentsPerDay = this._settings.Read( "PercentsPerDay", "Bank", 0.1 );
-            this._interestDate =
-                GTADate.Parse( this._settings.Read( "InterestDate", "Bank", Helper.GetCurrentDate().ToString() ) );
         }
     }
 }

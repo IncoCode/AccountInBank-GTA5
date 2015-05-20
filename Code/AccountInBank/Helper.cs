@@ -1,6 +1,7 @@
 ﻿#region Using
 
 using System.Collections.Generic;
+using GTA;
 using GTA.Math;
 using GTA.Native;
 
@@ -8,6 +9,14 @@ using GTA.Native;
 
 namespace AccountInBank
 {
+    internal enum PlayerModel
+    {
+        Michael = 1,
+        Franklin = 2,
+        Trevor = 3,
+        None = 4
+    }
+
     internal static class Helper
     {
         public static ATM[] GetAllATMs()
@@ -92,6 +101,25 @@ namespace AccountInBank
             int month = Function.Call<int>( Hash.GET_CLOCK_MONTH );
             int year = Function.Call<int>( Hash.GET_CLOCK_YEAR );
             return new GTADate( year, month, day );
+        }
+
+        public static int GetPlayerIndex()
+        {
+            Player player = Game.Player;
+            switch ( (PedHash)player.Character.Model.Hash )
+            {
+                case PedHash.Michael:
+                    return 1;
+
+                case PedHash.Franklin:
+                    return 2;
+
+                case PedHash.Trevor:
+                    return 3;
+
+                default:
+                    return 4;
+            }
         }
     }
 }
