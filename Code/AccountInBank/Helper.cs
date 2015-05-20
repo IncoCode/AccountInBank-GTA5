@@ -41,7 +41,6 @@ namespace AccountInBank
                 new ATM( new Vector3( 288.8256f, -1282.364f, 29.64128f ), 271.0125f, false ),
                 new ATM( new Vector3( 1077.768f, -776.4548f, 58.23997f ), 186.3605f, false ),
                 new ATM( new Vector3( 527.2687f, -160.7156f, 57.08937f ), 272.5496f, false ),
-                new ATM( new Vector3( -57.6918f, -92.56804f, 57.77821f ), 291.214f, false ),
                 new ATM( new Vector3( -867.5897f, -186.1757f, 37.84291f ), 117.088f, false ),
                 new ATM( new Vector3( -866.6556f, -187.7766f, 37.84278f ), 118.6207f, false ),
                 new ATM( new Vector3( -1205.024f, -326.2916f, 37.83985f ), 117.6146f, false ),
