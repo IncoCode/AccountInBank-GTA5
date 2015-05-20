@@ -32,6 +32,13 @@ namespace AccountInBank
             this._atmList = Helper.GetAllATMs();
             this._bank = new Bank( this._settings );
             this._menuController = new MenuController( this._bank, this._player, this );
+            this._menuController.MenuClosed += this._menuController_MenuClosed;
+        }
+
+        private void _menuController_MenuClosed( object sender, EventArgs e )
+        {
+            this.Interval = 1000;
+            this._player.CanControlCharacter = true;
         }
 
         private void AccountInBank_Tick( object sender, EventArgs e )
@@ -76,6 +83,7 @@ namespace AccountInBank
                 while ( Math.Abs( this._player.Character.Velocity.X ) + Math.Abs( this._player.Character.Velocity.Y ) >
                         0 || (int)this._player.Character.Heading != (int)nearATM.Heading );
                 this._menuController.ShowBankMenu();
+                this.Interval = 0;
             }
         }
     }

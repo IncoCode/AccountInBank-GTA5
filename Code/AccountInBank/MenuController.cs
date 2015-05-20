@@ -21,6 +21,8 @@ namespace AccountInBank
         private readonly Player _player;
         private readonly Script _script;
 
+        public event EventHandler<EventArgs> MenuClosed;
+
         public MenuController( Bank bank, Player player, Script script )
         {
             this._bank = bank;
@@ -116,7 +118,12 @@ namespace AccountInBank
                 new MenuButton( "Close", () =>
                 {
                     this._script.View.CloseAllMenus();
-                    this._player.CanControlCharacter = true;
+                    // fire OnClose event
+                    var onMenuClosed = this.MenuClosed;
+                    if ( onMenuClosed != null )
+                    {
+                        onMenuClosed( this, new EventArgs() );
+                    }
                 } ),
             } );
             SetDefaultColors( menu );

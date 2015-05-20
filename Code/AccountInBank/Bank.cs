@@ -64,8 +64,10 @@ namespace AccountInBank
             {
                 return;
             }
-            this._balance = this._balance + (int)Math.Round( this._balance * this._percentsPerDay );
+            int interest = (int)Math.Round( this._balance * this._percentsPerDay );
+            this._balance = this._balance + interest;
             this._interestDate = currDate;
+            UI.Notify( "Interest accrued: $" + interest );
             this.SaveSettings();
         }
 
