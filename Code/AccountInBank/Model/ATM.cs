@@ -6,7 +6,7 @@ using GTA.Math;
 
 #endregion
 
-namespace AccountInBank
+namespace AccountInBank.Model
 {
     internal class ATM : IDisposable
     {

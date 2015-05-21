@@ -5,7 +5,7 @@ using System.IO;
 
 #endregion
 
-namespace AccountInBank
+namespace AccountInBank.Model
 {
     public class GTADate : IComparable
     {

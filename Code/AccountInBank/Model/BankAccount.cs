@@ -1,4 +1,4 @@
-﻿namespace AccountInBank
+﻿namespace AccountInBank.Model
 {
     internal class BankAccount
     {

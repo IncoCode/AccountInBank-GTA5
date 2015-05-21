@@ -1,6 +1,7 @@
 ﻿#region Using
 
 using System.Collections.Generic;
+using AccountInBank.Model;
 using GTA;
 using GTA.Math;
 using GTA.Native;

@@ -3,6 +3,7 @@
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using AccountInBank.Model;
 using GTA;
 using Ini;
 

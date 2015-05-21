@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using AccountInBank.Model;
 using GTA;
 using Ini;
 
