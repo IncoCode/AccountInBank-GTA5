@@ -71,6 +71,7 @@
     <Compile Include="AccountInBank.cs" />
     <Compile Include="Bank.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="KillersController.cs" />
     <Compile Include="MenuController.cs" />
     <Compile Include="Model\ATM.cs" />
     <Compile Include="Model\BankAccount.cs" />

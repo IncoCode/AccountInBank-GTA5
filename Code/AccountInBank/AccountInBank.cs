@@ -20,11 +20,13 @@ namespace AccountInBank
         private readonly Bank _bank;
         private readonly MenuController _menuController;
         private readonly IniFile _settings;
+        private const int NeedleInterval = 100;
+        private readonly KillersController _killersController;
 
         public AccountInBank()
         {
             this.KeyDown += this.OnKeyDown;
-            this.Interval = 1000;
+            this.Interval = NeedleInterval;
             this.Tick += this.AccountInBank_Tick;
 
             this._player = Game.Player;
@@ -34,17 +36,19 @@ namespace AccountInBank
             this._bank = new Bank( this._settings );
             this._menuController = new MenuController( this._bank, this._player, this );
             this._menuController.MenuClosed += this._menuController_MenuClosed;
+            _killersController = new KillersController( () => { Wait( 0 ); } );
         }
 
         private void _menuController_MenuClosed( object sender, EventArgs e )
         {
-            this.Interval = 1000;
+            this.Interval = NeedleInterval;
             this._player.CanControlCharacter = true;
         }
 
         private void AccountInBank_Tick( object sender, EventArgs e )
         {
             this._bank.AccrueInterest();
+            _killersController.Check();
         }
 
         private void OnKeyDown( object sender, KeyEventArgs e )
@@ -85,6 +89,14 @@ namespace AccountInBank
                         0 || (int)this._player.Character.Heading != (int)nearATM.Heading );
                 this._menuController.ShowBankMenu();
                 this.Interval = 0;
+            }
+            else if ( e.KeyCode == Keys.L )
+            {
+                if ( _killersController.Blip != null )
+                {
+                    _killersController.Blip.Remove();
+                }
+                _killersController.Start();
             }
         }
     }
