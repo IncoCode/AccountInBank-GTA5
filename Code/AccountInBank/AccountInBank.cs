@@ -36,7 +36,7 @@ namespace AccountInBank
             this._bank = new Bank( this._settings );
             this._menuController = new MenuController( this._bank, this._player, this );
             this._menuController.MenuClosed += this._menuController_MenuClosed;
-            _killersController = new KillersController( () => { Wait( 0 ); } );
+            this._killersController = new KillersController( () => { Wait( 0 ); } );
         }
 
         private void _menuController_MenuClosed( object sender, EventArgs e )
@@ -48,7 +48,7 @@ namespace AccountInBank
         private void AccountInBank_Tick( object sender, EventArgs e )
         {
             this._bank.AccrueInterest();
-            _killersController.Check();
+            this._killersController.Check();
         }
 
         private void OnKeyDown( object sender, KeyEventArgs e )
@@ -92,11 +92,7 @@ namespace AccountInBank
             }
             else if ( e.KeyCode == Keys.L )
             {
-                if ( _killersController.Blip != null )
-                {
-                    _killersController.Blip.Remove();
-                }
-                _killersController.Start();
+                this._killersController.Start();
             }
         }
     }
