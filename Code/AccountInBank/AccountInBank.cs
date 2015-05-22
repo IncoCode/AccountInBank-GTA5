@@ -37,7 +37,7 @@ namespace AccountInBank
             this._bank = new Bank( this._settings );
             this._menuController = new MenuController( this._bank, this._player, this );
             this._menuController.MenuClosed += this._menuController_MenuClosed;
-            this._killersController = new KillersController( () => { Wait( 0 ); } );
+            this._killersController = new KillersController( () => { Wait( 100 ); } );
             this._mySettings = new MySettings( this._settings );
         }
 
