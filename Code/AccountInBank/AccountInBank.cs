@@ -51,6 +51,10 @@ namespace AccountInBank
         {
             if ( e.KeyCode == Keys.B )
             {
+                if ( !this._player.CanControlCharacter )
+                {
+                    this._player.CanControlCharacter = true;
+                }
                 if ( this._nearestATM == null )
                 {
                     this._nearestATM = Helper.GetNearestATM( this._playerPed.Position );
