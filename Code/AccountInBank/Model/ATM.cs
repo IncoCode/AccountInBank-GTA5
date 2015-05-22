@@ -34,7 +34,7 @@ namespace AccountInBank.Model
             this.Blip.ShowRoute = true;
         }
 
-        public bool IsInRange( Vector3 position, int range = 1 )
+        public bool IsInRange( Vector3 position, int range = 2 )
         {
             return range >= this.Position.DistanceTo( position );
         }
