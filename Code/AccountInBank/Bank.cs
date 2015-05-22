@@ -86,7 +86,7 @@ namespace AccountInBank
                 int interest = (int)Math.Round( account.Balance * this._percentsPerDay );
                 account.Balance = account.Balance + interest;
                 account.InterestDate = currDate;
-                if ( Helper.GetPlayerIndex() == i || interest > 0 )
+                if ( Helper.GetPlayerIndex() == i && interest > 0 )
                 {
                     UI.Notify( "Interest accrued: $" + interest );
                 }
