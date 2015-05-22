@@ -23,7 +23,7 @@ namespace AccountInBank
     {
         private readonly List<Ped> _killers;
         private Vehicle _killersVehicle;
-        private readonly Action _waitAction;
+        private readonly AccountInBank.SleepScript _sleepScript;
         private bool _enabled;
         private ActionType _type = ActionType.None;
 
@@ -35,43 +35,60 @@ namespace AccountInBank
 
         public Blip Blip { get; set; }
 
-        public KillersController( Action waitAction )
+        public KillersController( AccountInBank.SleepScript waitAction )
         {
-            this._waitAction = waitAction;
+            this._sleepScript = waitAction;
             this._killers = new List<Ped>();
+        }
+
+        private void SetupKiller( Ped killer )
+        {
+            killer.BlockPermanentEvents = true;
+            killer.Health = 5000;
+            killer.Armor = 5000;
+            killer.Accuracy = 100;
+            killer.AlwaysDiesOnLowHealth = false;
+            // give weapons
+            killer.Weapons.Give( WeaponHash.AssaultRifle, 100, false, true );
+            killer.Weapons[ WeaponHash.AssaultRifle ].Ammo = killer.Weapons[ WeaponHash.AssaultRifle ].MaxAmmo;
+            Function.Call( Hash.SET_PED_INFINITE_AMMO, killer.Handle, true,
+                (int)killer.Weapons[ WeaponHash.AssaultRifle ].Hash );
+            killer.Weapons.Give( WeaponHash.MicroSMG, 100, false, true );
+            killer.Weapons[ WeaponHash.MicroSMG ].Ammo = killer.Weapons[ WeaponHash.MicroSMG ].MaxAmmo;
+            Function.Call( Hash.SET_PED_INFINITE_AMMO, killer.Handle, true,
+                (int)killer.Weapons[ WeaponHash.MicroSMG ].Hash );
+        }
+
+        private void UpgradeKillersVehicle( Vehicle vehicle )
+        {
+            Function.Call( Hash.SET_VEHICLE_MOD_KIT, vehicle.Handle, 0 );
+            vehicle.SetMod( VehicleMod.Engine, 3, true );
+            vehicle.ToggleMod( VehicleToggleMod.Turbo, true );
+            vehicle.SetMod( VehicleMod.Transmission, 2, true );
+            vehicle.SecondaryColor = VehicleColor.MetallicRed;
         }
 
         private void SpawnCarAndKillers()
         {
-            Vector3 position = Game.Player.Character.Position.Around( 100 );
+            Vector3 position = Game.Player.Character.Position.Around( 75 );
             //Vector3 position = Game.Player.Character.Position + Game.Player.Character.ForwardVector * 5f;
             this._killersVehicle = World.CreateVehicle( VehicleHash.Kuruma2, position );
             this._killersVehicle.PlaceOnNextStreet();
             this._killersVehicle.PlaceOnGround();
-            this._killers.Add( this._killersVehicle.CreatePedOnSeat( VehicleSeat.Driver, PedHash.Marine01SMY ) );
-            var group1 = World.AddRelationShipGroup( "bank" );
-            var group2 = World.AddRelationShipGroup( "pl" );
-            World.SetRelationshipBetweenGroups( Relationship.Hate, group1, group2 );
-            Game.Player.Character.RelationshipGroup = group2;
+            this.UpgradeKillersVehicle( this._killersVehicle );
+
+            Ped driver = this._killersVehicle.CreatePedOnSeat( VehicleSeat.Driver, PedHash.Marine01SMY );
+            driver.CanBeDraggedOutOfVehicle = false;
+            this.SetupKiller( driver );
+            this._killers.Add( driver );
+            //var group1 = World.AddRelationShipGroup( "bank" );
+            //var group2 = World.AddRelationShipGroup( "pl" );
+            //World.SetRelationshipBetweenGroups( Relationship.Hate, group1, group2 );
+            //Game.Player.Character.RelationshipGroup = group2;
             for ( int i = 0; i < this._killersVehicle.PassengerSeats; i++ )
             {
                 Ped killer = this._killersVehicle.CreatePedOnSeat( this._vehicleSeat[ i + 1 ], PedHash.Marine01SMM );
-                killer.BlockPermanentEvents = true;
-                killer.Health = 5000;
-                killer.Armor = 5000;
-                killer.Accuracy = 100;
-                killer.AlwaysDiesOnLowHealth = false;
-                killer.RelationshipGroup = group1;
-                // give weapons
-                killer.Weapons.Give( WeaponHash.AssaultRifle, 100, true, true );
-                killer.Weapons[ WeaponHash.AssaultRifle ].Ammo = killer.Weapons[ WeaponHash.AssaultRifle ].MaxAmmo;
-                Function.Call( Hash.SET_PED_INFINITE_AMMO, killer.Handle, true,
-                    (int)killer.Weapons[ WeaponHash.AssaultRifle ].Hash );
-                killer.Weapons.Give( WeaponHash.MicroSMG, 100, false, true );
-                killer.Weapons[ WeaponHash.MicroSMG ].Ammo = killer.Weapons[ WeaponHash.MicroSMG ].MaxAmmo;
-                Function.Call( Hash.SET_PED_INFINITE_AMMO, killer.Handle, true,
-                    (int)killer.Weapons[ WeaponHash.MicroSMG ].Hash );
-
+                this.SetupKiller( killer );
                 this._killers.Add( killer );
             }
             this.Blip = this._killersVehicle.AddBlip();
@@ -85,13 +102,12 @@ namespace AccountInBank
                 Ped killer = this._killers[ i ];
                 if ( !killer.IsInVehicle( this._killersVehicle ) )
                 {
-                    killer.Task.EnterVehicle( this._killersVehicle, this._vehicleSeat[ i ], 2000 );
+                    killer.Task.EnterVehicle( this._killersVehicle, this._vehicleSeat[ i ], 1000 );
                 }
             }
-            while (
-                this._killers.Any( killer => !killer.IsInVehicle( this._killersVehicle ) || killer.IsGettingIntoAVehicle ) )
+            while ( this._killers.Any( killer => !killer.IsInVehicle( this._killersVehicle ) ) )
             {
-                this._waitAction();
+                this._sleepScript( 200 );
             }
         }
 
@@ -100,7 +116,7 @@ namespace AccountInBank
             while ( (int)Math.Round( this._killersVehicle.Velocity.X ) != 0 ||
                     (int)Math.Round( this._killersVehicle.Velocity.Y ) != 0 )
             {
-                this._waitAction();
+                this._sleepScript( 200 );
             }
             for ( int i = 1; i < this._killers.Count; i++ )
             {
@@ -109,7 +125,7 @@ namespace AccountInBank
             }
             while ( this.IsAllInCarExceptDriver() )
             {
-                this._waitAction();
+                this._sleepScript( 200 );
             }
         }
 
@@ -117,19 +133,25 @@ namespace AccountInBank
         {
             return
                 this._killers.GetRange( 1, this._killers.Count - 1 )
-                    .Any( killer => killer.IsInVehicle( this._killersVehicle ) );
+                    .Any( killer => killer.IsInVehicle( this._killersVehicle ) || !killer.IsAlive );
         }
 
-        private void ChaseShootPlayerInCar()
+        private void ChaseShootPlayerInCar( bool chase = true )
         {
             Player player = Game.Player;
             Ped driver = this._killers[ 0 ];
-            Function.Call( Hash.TASK_VEHICLE_CHASE, driver.Handle, player.Character.Handle );
+            if ( chase )
+            {
+                Function.Call( Hash.TASK_VEHICLE_CHASE, driver.Handle, player.Character.Handle );
+            }
+            else
+            {
+                driver.Task.DriveTo( this._killersVehicle, player.Character.Position, 3f, 90, 0 );
+            }
             for ( int i = 1; i < this._killers.Count; i++ )
             {
                 Ped killer = this._killers[ i ];
                 Function.Call( Hash.TASK_VEHICLE_SHOOT_AT_PED, killer.Handle, player.Character.Handle, 20f );
-                // 20f - distance
             }
         }
 
@@ -147,6 +169,7 @@ namespace AccountInBank
                 if ( aliveKiller != null )
                 {
                     aliveKiller.Task.ReactAndFlee( player.Character );
+                    Function.Call( Hash.SET_PED_DROPS_WEAPON, aliveKiller.Handle );
                 }
                 this._killersVehicle.MarkAsNoLongerNeeded();
                 foreach ( Ped killer in this._killers )
@@ -173,16 +196,17 @@ namespace AccountInBank
             }
             else
             {
-                if ( driver.Position.DistanceTo( player.Character.Position ) > 20 )
+                if ( driver.Position.DistanceTo( player.Character.Position ) > 15 )
                 {
-                    if ( this._type == ActionType.ShootingOutsideVehicleTooFar )
+                    /*if ( this._type == ActionType.ShootingOutsideVehicleTooFar )
                     {
                         return;
-                    }
+                    }*/
                     this._type = ActionType.ShootingOutsideVehicleTooFar;
                     this.PutAllInCar();
                     Function.Call( Hash.SET_VEHICLE_HANDBRAKE, this._killersVehicle.Handle, false );
-                    this.ChaseShootPlayerInCar();
+                    this.ChaseShootPlayerInCar( false );
+                    this._sleepScript( 5000 );
                 }
                 else
                 {
@@ -190,8 +214,11 @@ namespace AccountInBank
                     {
                         return;
                     }
+                    //driver.Task.ClearAllImmediately();
+                    //Function.Call( Hash.SET_PED_INTO_VEHICLE, _killersVehicle.Handle, driver.Handle, (int)VehicleSeat.Driver );
                     this._type = ActionType.ShootingOutsideVehicle;
                     Function.Call( Hash.SET_VEHICLE_HANDBRAKE, this._killersVehicle.Handle, true );
+                    driver.Task.Wait( 2500 );
                     if ( this.IsAllInCarExceptDriver() )
                     {
                         this.AllLeavesCarExceptDriver();
@@ -199,6 +226,7 @@ namespace AccountInBank
                     for ( int i = 1; i < this._killers.Count; i++ )
                     {
                         Ped killer = this._killers[ i ];
+                        killer.Task.ClearAllImmediately();
                         killer.Weapons.Select( killer.Weapons[ WeaponHash.AssaultRifle ] );
                         killer.Task.ShootAt( player.Character );
                     }

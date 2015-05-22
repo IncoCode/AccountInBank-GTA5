@@ -20,9 +20,11 @@ namespace AccountInBank
         private readonly Bank _bank;
         private readonly MenuController _menuController;
         private readonly IniFile _settings;
-        private const int NeedleInterval = 100;
+        private const int NeedleInterval = 1000;
         private readonly KillersController _killersController;
         private readonly MySettings _mySettings;
+
+        internal delegate void SleepScript( int duration );
 
         public AccountInBank()
         {
@@ -37,8 +39,13 @@ namespace AccountInBank
             this._bank = new Bank( this._settings );
             this._menuController = new MenuController( this._bank, this._player, this );
             this._menuController.MenuClosed += this._menuController_MenuClosed;
-            this._killersController = new KillersController( () => { Wait( 100 ); } );
+            this._killersController = new KillersController( this.Sleep );
             this._mySettings = new MySettings( this._settings );
+        }
+
+        private void Sleep( int duration )
+        {
+            Wait( duration );
         }
 
         private void _menuController_MenuClosed( object sender, EventArgs e )
