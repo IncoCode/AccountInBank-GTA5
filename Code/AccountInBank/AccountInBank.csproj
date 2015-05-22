@@ -76,6 +76,7 @@
     <Compile Include="Model\ATM.cs" />
     <Compile Include="Model\BankAccount.cs" />
     <Compile Include="Model\GTADate.cs" />
+    <Compile Include="MySettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

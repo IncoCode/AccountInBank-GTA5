@@ -112,7 +112,7 @@ namespace AccountInBank
             var menu = new Menu( "ATM Menu", new MenuItem[]
             {
                 new MenuButton( "Show balance",
-                    () => { this.ShowOperationStatusMenu( "Balance: " + this._bank.Balance, true, 3000, null ); } ),
+                    () => { this.ShowOperationStatusMenu( "Balance: $" + this._bank.Balance, true, 3000, null ); } ),
                 new MenuButton( "Deposit", () => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit ); } ),
                 new MenuButton( "Withdrawal", () => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal ); } ),
                 new MenuButton( "Close", () =>

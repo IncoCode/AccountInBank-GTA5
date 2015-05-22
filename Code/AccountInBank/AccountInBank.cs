@@ -13,7 +13,7 @@ namespace AccountInBank
 {
     internal class AccountInBank : Script
     {
-        private ATM _nearestATM = null;
+        private ATM _nearestATM;
         private readonly Player _player;
         private readonly Ped _playerPed;
         private readonly ATM[] _atmList;
@@ -22,6 +22,7 @@ namespace AccountInBank
         private readonly IniFile _settings;
         private const int NeedleInterval = 100;
         private readonly KillersController _killersController;
+        private readonly MySettings _mySettings;
 
         public AccountInBank()
         {
@@ -37,6 +38,7 @@ namespace AccountInBank
             this._menuController = new MenuController( this._bank, this._player, this );
             this._menuController.MenuClosed += this._menuController_MenuClosed;
             this._killersController = new KillersController( () => { Wait( 0 ); } );
+            this._mySettings = new MySettings( this._settings );
         }
 
         private void _menuController_MenuClosed( object sender, EventArgs e )
@@ -53,7 +55,7 @@ namespace AccountInBank
 
         private void OnKeyDown( object sender, KeyEventArgs e )
         {
-            if ( e.KeyCode == Keys.B )
+            if ( e.KeyCode == this._mySettings.MarkATMKey )
             {
                 if ( this._nearestATM == null )
                 {
@@ -66,7 +68,7 @@ namespace AccountInBank
                     this._nearestATM = null;
                 }
             }
-            else if ( e.KeyCode == Keys.O )
+            else if ( e.KeyCode == this._mySettings.OpenATMMenuKey )
             {
                 ATM nearATM = this._atmList.FirstOrDefault( atm => atm.IsInRange( this._playerPed.Position ) );
                 // if player isn't near some atm
@@ -81,9 +83,14 @@ namespace AccountInBank
                 }
                 this._player.CanControlCharacter = false;
                 this._player.Character.Task.SlideToCoord( nearATM.Position, nearATM.Heading );
+                DateTime endTime = DateTime.Now + new TimeSpan( 0, 0, 0, 0, 2500 );
                 do
                 {
                     Wait( 200 );
+                    if ( DateTime.Now >= endTime )
+                    {
+                        break;
+                    }
                 }
                 while ( Math.Abs( this._player.Character.Velocity.X ) + Math.Abs( this._player.Character.Velocity.Y ) >
                         0 || (int)this._player.Character.Heading != (int)nearATM.Heading );
