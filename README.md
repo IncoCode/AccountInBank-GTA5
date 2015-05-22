@@ -5,6 +5,8 @@
 
 This script lets you store ~~stolen~~ your money in bank account and earn interest (0.1% per day by default).
 
+Maximum balance: **2 147 483 647** for each character.
+
 How to use
 ----------
 
