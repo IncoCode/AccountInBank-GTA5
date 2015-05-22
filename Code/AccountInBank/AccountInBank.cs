@@ -21,6 +21,7 @@ namespace AccountInBank
         private readonly MenuController _menuController;
         private readonly IniFile _settings;
         private readonly MySettings _mySettings;
+        private readonly CharacterStat[] _charactersStats;
 
         public AccountInBank()
         {
@@ -33,9 +34,13 @@ namespace AccountInBank
             this._settings = new IniFile( "scripts\\AccountInBank.ini" );
             this._atmList = Helper.GetAllATMs();
             this._bank = new Bank( this._settings );
+
             this._menuController = new MenuController( this._bank, this._player, this );
             this._menuController.MenuClosed += this._menuController_MenuClosed;
+
             this._mySettings = new MySettings( this._settings );
+            this._charactersStats = new CharacterStat[ 3 ];
+            this.LoadCharactersStats();
         }
 
         private void _menuController_MenuClosed( object sender, EventArgs e )
@@ -47,6 +52,38 @@ namespace AccountInBank
         private void AccountInBank_Tick( object sender, EventArgs e )
         {
             this._bank.AccrueInterest();
+
+            int playerId = Helper.GetPlayerIndex() - 1;
+            if ( this._mySettings.LoseCashOnArrest )
+            {
+                int arrests = Helper.GetArrestsValueStat( playerId );
+                if ( arrests > this._charactersStats[ playerId ].Arrests )
+                {
+                    this._charactersStats[ playerId ].Arrests = arrests;
+                    Game.Player.Money = 0;
+                    UI.Notify( "Oh, no! You lost all your cash!" );
+                }
+            }
+            if ( this._mySettings.LoseCashOnDeath )
+            {
+                int deaths = Helper.GetDeathsValueStat( playerId );
+                if ( deaths > this._charactersStats[ playerId ].Deaths )
+                {
+                    this._charactersStats[ playerId ].Deaths = deaths;
+                    Game.Player.Money = 0;
+                    UI.Notify( "Oh, no! You lost all your cash!" );
+                }
+            }
+        }
+
+        private void LoadCharactersStats()
+        {
+            for ( int i = 0; i < 3; i++ )
+            {
+                int deaths = Helper.GetDeathsValueStat( i );
+                int arrests = Helper.GetArrestsValueStat( i );
+                this._charactersStats[ i ] = new CharacterStat( i, deaths, arrests );
+            }
         }
 
         private void OnKeyDown( object sender, KeyEventArgs e )
