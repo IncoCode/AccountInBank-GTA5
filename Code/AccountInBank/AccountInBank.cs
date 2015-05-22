@@ -53,10 +53,6 @@ namespace AccountInBank
         {
             if ( e.KeyCode == this._mySettings.MarkATMKey )
             {
-                if ( !this._player.CanControlCharacter )
-                {
-                    this._player.CanControlCharacter = true;
-                }
                 if ( this._nearestATM == null )
                 {
                     this._nearestATM = Helper.GetNearestATM( this._playerPed.Position );
@@ -83,9 +79,14 @@ namespace AccountInBank
                 }
                 this._player.CanControlCharacter = false;
                 this._player.Character.Task.SlideToCoord( nearATM.Position, nearATM.Heading );
+                DateTime endTime = DateTime.Now + new TimeSpan( 0, 0, 0, 0, 2500 );
                 do
                 {
                     Wait( 200 );
+                    if ( DateTime.Now >= endTime )
+                    {
+                        break;
+                    }
                 }
                 while ( Math.Abs( this._player.Character.Velocity.X ) + Math.Abs( this._player.Character.Velocity.Y ) >
                         0 || (int)this._player.Character.Heading != (int)nearATM.Heading );
