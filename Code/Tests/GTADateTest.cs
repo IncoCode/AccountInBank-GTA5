@@ -1,6 +1,5 @@
 ﻿#region Using
 
-using AccountInBank;
 using AccountInBank.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
