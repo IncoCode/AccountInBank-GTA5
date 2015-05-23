@@ -73,6 +73,22 @@ namespace AccountInBank
             this.SaveSettings();
         }
 
+        public void TransferMoney( int targetPlayer, int value )
+        {
+            int playerIndex = Helper.GetPlayerIndex();
+            if ( targetPlayer == playerIndex )
+            {
+                throw new Exception( "Wrong target index!" );
+            }
+            if ( value < 1 || value > this._balances[ playerIndex ].Balance )
+            {
+                throw new Exception( "Wrong value!" );
+            }
+            this._balances[ playerIndex ].Balance -= value;
+            this._balances[ targetPlayer ].Balance += value;
+            this.SaveSettings();
+        }
+
         public void AccrueInterest()
         {
             GTADate currDate = Helper.GetCurrentDate();
