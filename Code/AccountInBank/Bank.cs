@@ -52,8 +52,13 @@ namespace AccountInBank
             {
                 throw new Exception( "Wrong player index!" );
             }
+            BankAccount account = this._balances[ playerIndex ];
+            if ( account.Balance + deposit > int.MaxValue - 5 )
+            {
+                throw new Exception( "Reached the maximum value!" );
+            }
             player.Money -= deposit;
-            this._balances[ playerIndex ].Balance += deposit;
+            account.Balance += deposit;
             this.SaveSettings();
         }
 
@@ -73,6 +78,26 @@ namespace AccountInBank
             this.SaveSettings();
         }
 
+        public void TransferMoney( int targetPlayer, int value )
+        {
+            int playerIndex = Helper.GetPlayerIndex();
+            if ( targetPlayer == playerIndex )
+            {
+                throw new Exception( "Wrong target index!" );
+            }
+            if ( value < 1 || value > this._balances[ playerIndex ].Balance )
+            {
+                throw new Exception( "Wrong value!" );
+            }
+            if ( this._balances[ targetPlayer ].Balance + value > int.MaxValue - 5 )
+            {
+                throw new Exception( "Reached the maximum value!" );
+            }
+            this._balances[ playerIndex ].Balance -= value;
+            this._balances[ targetPlayer ].Balance += value;
+            this.SaveSettings();
+        }
+
         public void AccrueInterest()
         {
             GTADate currDate = Helper.GetCurrentDate();
@@ -84,9 +109,13 @@ namespace AccountInBank
                     return;
                 }
                 int interest = (int)Math.Round( account.Balance * this._percentsPerDay );
-                account.Balance = account.Balance + interest;
                 account.InterestDate = currDate;
-                if ( Helper.GetPlayerIndex() == i || interest > 0 )
+                if ( account.Balance + interest > int.MaxValue - 5 )
+                {
+                    return;
+                }
+                account.Balance = account.Balance + interest;
+                if ( Helper.GetPlayerIndex() == i && interest > 0 )
                 {
                     UI.Notify( "Interest accrued: $" + interest );
                 }

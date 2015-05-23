@@ -75,6 +75,7 @@
     <Compile Include="MenuController.cs" />
     <Compile Include="Model\ATM.cs" />
     <Compile Include="Model\BankAccount.cs" />
+    <Compile Include="Model\CharacterStat.cs" />
     <Compile Include="Model\GTADate.cs" />
     <Compile Include="MySettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

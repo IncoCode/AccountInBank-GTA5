@@ -14,8 +14,6 @@ namespace AccountInBank
     internal class AccountInBank : Script
     {
         private ATM _nearestATM;
-        private readonly Player _player;
-        private readonly Ped _playerPed;
         private readonly ATM[] _atmList;
         private readonly Bank _bank;
         private readonly MenuController _menuController;
@@ -23,6 +21,7 @@ namespace AccountInBank
         private const int NeedleInterval = 1000;
         private readonly KillersController _killersController;
         private readonly MySettings _mySettings;
+        private readonly CharacterStat[] _charactersStats;
 
         internal delegate void SleepScript( int duration );
 
@@ -32,15 +31,16 @@ namespace AccountInBank
             this.Interval = NeedleInterval;
             this.Tick += this.AccountInBank_Tick;
 
-            this._player = Game.Player;
-            this._playerPed = this._player.Character;
             this._settings = new IniFile( "scripts\\AccountInBank.ini" );
             this._atmList = Helper.GetAllATMs();
             this._bank = new Bank( this._settings );
-            this._menuController = new MenuController( this._bank, this._player, this );
+
+            this._menuController = new MenuController( this._bank, Game.Player, this );
             this._menuController.MenuClosed += this._menuController_MenuClosed;
             this._killersController = new KillersController( this.Sleep );
             this._mySettings = new MySettings( this._settings );
+            this._charactersStats = new CharacterStat[ 3 ];
+            this.LoadCharactersStats();
         }
 
         private void Sleep( int duration )
@@ -51,13 +51,45 @@ namespace AccountInBank
         private void _menuController_MenuClosed( object sender, EventArgs e )
         {
             this.Interval = NeedleInterval;
-            this._player.CanControlCharacter = true;
+            Game.Player.CanControlCharacter = true;
         }
 
         private void AccountInBank_Tick( object sender, EventArgs e )
         {
             this._bank.AccrueInterest();
             this._killersController.Check();
+
+            int playerId = Helper.GetPlayerIndex() - 1;
+            if ( this._mySettings.LoseCashOnArrest )
+            {
+                int arrests = Helper.GetArrestsValueStat( playerId );
+                if ( arrests > this._charactersStats[ playerId ].Arrests )
+                {
+                    this._charactersStats[ playerId ].Arrests = arrests;
+                    Game.Player.Money = 0;
+                    UI.Notify( "Oh, no! You lost all your cash!" );
+                }
+            }
+            if ( this._mySettings.LoseCashOnDeath )
+            {
+                int deaths = Helper.GetDeathsValueStat( playerId );
+                if ( deaths > this._charactersStats[ playerId ].Deaths )
+                {
+                    this._charactersStats[ playerId ].Deaths = deaths;
+                    Game.Player.Money = 0;
+                    UI.Notify( "Oh, no! You lost all your cash!" );
+                }
+            }
+        }
+
+        private void LoadCharactersStats()
+        {
+            for ( int i = 0; i < 3; i++ )
+            {
+                int deaths = Helper.GetDeathsValueStat( i );
+                int arrests = Helper.GetArrestsValueStat( i );
+                this._charactersStats[ i ] = new CharacterStat( i, deaths, arrests );
+            }
         }
 
         private void OnKeyDown( object sender, KeyEventArgs e )
@@ -66,7 +98,7 @@ namespace AccountInBank
             {
                 if ( this._nearestATM == null )
                 {
-                    this._nearestATM = Helper.GetNearestATM( this._playerPed.Position );
+                    this._nearestATM = Helper.GetNearestATM( Game.Player.Character.Position );
                     this._nearestATM.CreateBlip();
                 }
                 else
@@ -77,7 +109,7 @@ namespace AccountInBank
             }
             else if ( e.KeyCode == this._mySettings.OpenATMMenuKey )
             {
-                ATM nearATM = this._atmList.FirstOrDefault( atm => atm.IsInRange( this._playerPed.Position ) );
+                ATM nearATM = this._atmList.FirstOrDefault( atm => atm.IsInRange( Game.Player.Character.Position ) );
                 // if player isn't near some atm
                 if ( nearATM == null )
                 {
@@ -88,8 +120,8 @@ namespace AccountInBank
                     this._nearestATM.Dispose();
                     this._nearestATM = null;
                 }
-                this._player.CanControlCharacter = false;
-                this._player.Character.Task.SlideToCoord( nearATM.Position, nearATM.Heading );
+                Game.Player.CanControlCharacter = false;
+                Game.Player.Character.Task.SlideToCoord( nearATM.Position, nearATM.Heading );
                 DateTime endTime = DateTime.Now + new TimeSpan( 0, 0, 0, 0, 2500 );
                 do
                 {
@@ -99,8 +131,8 @@ namespace AccountInBank
                         break;
                     }
                 }
-                while ( Math.Abs( this._player.Character.Velocity.X ) + Math.Abs( this._player.Character.Velocity.Y ) >
-                        0 || (int)this._player.Character.Heading != (int)nearATM.Heading );
+                while ( Math.Abs( Game.Player.Character.Velocity.X ) + Math.Abs( Game.Player.Character.Velocity.Y ) >
+                        0 || (int)Game.Player.Character.Heading != (int)nearATM.Heading );
                 this._menuController.ShowBankMenu();
                 this.Interval = 0;
             }

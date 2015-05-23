@@ -141,5 +141,21 @@ namespace AccountInBank
             }
             return resKey;
         }
+
+        public static unsafe int GetDeathsValueStat( int playerId )
+        {
+            int hashDeaths = Function.Call<int>( Hash.GET_HASH_KEY, "SP" + playerId + "_DEATHS" );
+            int deaths = 0;
+            Function.Call<bool>( Hash.STAT_GET_INT, hashDeaths, &deaths, -1 );
+            return deaths;
+        }
+
+        public static unsafe int GetArrestsValueStat( int playerId )
+        {
+            int hashArrests = Function.Call<int>( Hash.GET_HASH_KEY, "SP" + playerId + "_BUSTED" );
+            int arrests = 0;
+            Function.Call<bool>( Hash.STAT_GET_INT, hashArrests, &arrests, -1 );
+            return arrests;
+        }
     }
 }

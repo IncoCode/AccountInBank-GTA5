@@ -2,6 +2,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 using GTA;
 
@@ -18,15 +19,14 @@ namespace AccountInBank
     internal class MenuController
     {
         private readonly Bank _bank;
-        private readonly Player _player;
         private readonly Script _script;
+        private int _selectedChar = 0;
 
         public event EventHandler<EventArgs> MenuClosed;
 
         public MenuController( Bank bank, Player player, Script script )
         {
             this._bank = bank;
-            this._player = player;
             this._script = script;
         }
 
@@ -115,6 +115,7 @@ namespace AccountInBank
                     () => { this.ShowOperationStatusMenu( "Balance: $" + this._bank.Balance, true, 3000, null ); } ),
                 new MenuButton( "Deposit", () => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit ); } ),
                 new MenuButton( "Withdrawal", () => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal ); } ),
+                new MenuButton( "Money transfer", () => { this.MoneyTransferActionMenuClick(); } ),
                 new MenuButton( "Close", () =>
                 {
                     this._script.View.CloseAllMenus();
@@ -145,11 +146,11 @@ namespace AccountInBank
                     switch ( action )
                     {
                         case ATMBalanceAction.Deposit:
-                            this._bank.DepositMoney( this._player, deposit );
+                            this._bank.DepositMoney( Game.Player, deposit );
                             break;
 
                         case ATMBalanceAction.Withdrawal:
-                            this._bank.WithdrawalMoney( this._player, deposit );
+                            this._bank.WithdrawalMoney( Game.Player, deposit );
                             break;
 
                         default:
@@ -163,6 +164,48 @@ namespace AccountInBank
                 }
             }
             this.ShowOperationStatusMenu( status, true, 2000, color );
+        }
+
+        private void MoneyTransferActionMenuClick()
+        {
+            this._script.View.CloseAllMenus();
+            int playerIndex = Helper.GetPlayerIndex();
+            PlayerModel[] availableCharacters =
+                Enum.GetValues( typeof( PlayerModel ) )
+                    .Cast<PlayerModel>()
+                    .Where( p => (int)p != playerIndex && p != PlayerModel.None )
+                    .ToArray();
+            var menu = new Menu( "Money transfer", new MenuItem[]
+            {
+                new MenuEnumScroller( "Character", "", i => { this._selectedChar = i; }, i => { },
+                    Array.ConvertAll( availableCharacters, p => p.ToString() ) ),
+                new MenuButton( "Next", () =>
+                {
+                    string valueS = Game.GetUserInput( "Enter value...", 9 );
+                    int value;
+                    string status = "Incorrect value!";
+                    Color color = Color.Red;
+                    if ( int.TryParse( valueS, out value ) )
+                    {
+                        status = "Success!";
+                        color = Color.LimeGreen;
+                        try
+                        {
+                            int target = ( (int)availableCharacters[ this._selectedChar ] );
+                            this._bank.TransferMoney( target, value );
+                        }
+                        catch ( Exception exception )
+                        {
+                            color = Color.Red;
+                            status = exception.Message;
+                        }
+                    }
+                    this.ShowOperationStatusMenu( status, true, 2000, color );
+                } )
+            } );
+            menu.Width += 25;
+            SetDefaultColors( menu );
+            this.ShowMenu( menu );
         }
     }
 }
