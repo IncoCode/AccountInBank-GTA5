@@ -33,3 +33,14 @@ Don't type numbers using your numpad. Sometimes it's works incorrect.
 ATM location
 --------------
 If you found ATM that not exists in the list - let me know.
+
+Changelog
+--------------
+v1.0.2
+- Added features: LoseCashOnArrest and LoseCashOnDeath (disabled by default);
+- Ability to transfer money between characters accounts;
+- Bug fixes.
+
+v1.0.1
+- Ability to change default keys in .ini-file;
+- Some fixes.

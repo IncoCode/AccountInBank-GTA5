@@ -1,3 +1,0 @@
-v1.0.1
-- Ability to change default keys in .ini-file;
-- Some fixes.
