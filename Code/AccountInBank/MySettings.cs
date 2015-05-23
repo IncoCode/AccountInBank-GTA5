@@ -20,9 +20,9 @@ namespace AccountInBank
 
         #endregion
 
-        public MySettings( IniFile settings )
+        public MySettings()
         {
-            this._settings = settings;
+            this._settings = new IniFile( "scripts\\AccountInBankS.ini" );
             this.Load();
         }
 
