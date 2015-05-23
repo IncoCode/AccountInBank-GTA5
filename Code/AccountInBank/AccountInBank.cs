@@ -38,7 +38,7 @@ namespace AccountInBank
             this._menuController = new MenuController( this._bank, Game.Player, this );
             this._menuController.MenuClosed += this._menuController_MenuClosed;
             this._killersController = new KillersController( this.Sleep );
-            this._mySettings = new MySettings( this._settings );
+            this._mySettings = new MySettings();
             this._charactersStats = new CharacterStat[ 3 ];
             this.LoadCharactersStats();
         }
