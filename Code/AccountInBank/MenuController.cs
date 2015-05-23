@@ -19,7 +19,6 @@ namespace AccountInBank
     internal class MenuController
     {
         private readonly Bank _bank;
-        private readonly Player _player;
         private readonly Script _script;
         private int _selectedChar = 0;
 
@@ -28,7 +27,6 @@ namespace AccountInBank
         public MenuController( Bank bank, Player player, Script script )
         {
             this._bank = bank;
-            this._player = player;
             this._script = script;
         }
 
@@ -148,11 +146,11 @@ namespace AccountInBank
                     switch ( action )
                     {
                         case ATMBalanceAction.Deposit:
-                            this._bank.DepositMoney( this._player, deposit );
+                            this._bank.DepositMoney( Game.Player, deposit );
                             break;
 
                         case ATMBalanceAction.Withdrawal:
-                            this._bank.WithdrawalMoney( this._player, deposit );
+                            this._bank.WithdrawalMoney( Game.Player, deposit );
                             break;
 
                         default:
