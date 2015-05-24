@@ -97,6 +97,11 @@ namespace AccountInBank
 
         private void PutAllInCar()
         {
+            Ped driver = _killers[ 0 ];
+            if ( !driver.IsInVehicle( _killersVehicle ) )
+            {
+                driver.Task.EnterVehicle( _killersVehicle, VehicleSeat.Driver, 100 );
+            }
             for ( int i = 1; i < this._killers.Count; i++ )
             {
                 Ped killer = this._killers[ i ];
@@ -182,7 +187,13 @@ namespace AccountInBank
                 }
                 return;
             }
+
             Ped driver = this._killers[ 0 ];
+            if ( !driver.IsAlive )
+            {
+                _killers.Remove( driver );
+                driver = _killers[ 0 ];
+            }
             if ( player.Character.IsInVehicle() )
             {
                 if ( this._type == ActionType.ChaseInVehicle )
