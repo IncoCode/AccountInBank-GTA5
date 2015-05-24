@@ -144,7 +144,7 @@ namespace AccountInBank
                     GTADate.Parse( this._settings.Read( "InterestDate" + i, "Bank", Helper.GetCurrentDate().ToString() ) );
                 this._balances[ i ] = new BankAccount( balance, interestDate );
             }
-            this._percentsPerDay = this._settings.Read( "PercentsPerDay", "Bank", 0.1 );
+            this._percentsPerDay = this._settings.Read( "PercentsPerDay", "Bank", 0.001 );
         }
     }
 }
