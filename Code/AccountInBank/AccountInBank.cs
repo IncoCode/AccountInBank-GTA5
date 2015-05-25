@@ -114,7 +114,7 @@ namespace AccountInBank
                 }
                 Game.Player.CanControlCharacter = false;
                 Game.Player.Character.Task.SlideToCoord( nearATM.Position, nearATM.Heading );
-                DateTime endTime = DateTime.Now + new TimeSpan( 0, 0, 0, 0, 2500 );
+                DateTime endTime = DateTime.Now + new TimeSpan( 0, 0, 0, 0, 4500 );
                 do
                 {
                     Wait( 200 );
