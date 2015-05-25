@@ -1,9 +1,9 @@
 # AccountInBank-GTA5
 [![Build Status](https://ci.appveyor.com/api/projects/status/bm28vepxi85dmqn5/branch/master?svg=true)](https://ci.appveyor.com/project/IncoCode/accountinbank-gta5)
 
-###**__Still WIP__**.
+This script lets you store ~~stolen~~ your money in bank account and earn interest (0.001% per day by default). Also you can transfer money between characters accounts.
 
-This script lets you store ~~stolen~~ your money in bank account and earn interest (0.001% per day by default).
+In v1.0.2 (and above) you can enable some hardcore features: LoseCashOnArrest and LoseCashOnDeath. Just change False to True to enable desired feature in AccountInBankS.ini .
 
 Maximum balance: **2 147 483 647** for _each_ character.
 
@@ -36,6 +36,10 @@ If you found ATM that not exists in the list - let me know.
 
 Changelog
 --------------
+v1.0.3
+- Default percent now 0.001%;
+- Added animation playback.
+
 v1.0.2
 - Added features: LoseCashOnArrest and LoseCashOnDeath (disabled by default);
 - Ability to transfer money between characters accounts;
