@@ -19,7 +19,7 @@ Requirements
 - Microsoft .NET Framework 4.5;
 - Microsoft Visual C++ Redistributable Package for Visual Studio 2013 (x64);
 - Script Hook V;
-- Community Script Hook V .NET ( https://ci.appveyor.com/project/crosire/scripthookvdotnet%C2%A0/build/artifacts ).
+- [Community Script Hook V .NET](https://ci.appveyor.com/project/crosire/scripthookvdotnet%C2%A0/build/artifacts).
 
 How to install
 --------------
