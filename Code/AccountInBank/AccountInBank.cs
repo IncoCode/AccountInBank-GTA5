@@ -42,6 +42,8 @@ namespace AccountInBank
         private void _menuController_MenuClosed( object sender, EventArgs e )
         {
             this.Interval = 1000;
+            MyAnimation_Bank.PlayExitAnimation();
+            Wait( 6500 );
             Game.Player.CanControlCharacter = true;
         }
 
@@ -123,6 +125,9 @@ namespace AccountInBank
                 }
                 while ( Math.Abs( Game.Player.Character.Velocity.X ) + Math.Abs( Game.Player.Character.Velocity.Y ) >
                         0 || (int)Game.Player.Character.Heading != (int)nearATM.Heading );
+                MyAnimation_Bank.PlayEnterAnimation();
+                Wait( 6500 );
+                MyAnimation_Bank.PlayIdleAnimation();
                 this._menuController.ShowBankMenu();
                 this.Interval = 0;
             }

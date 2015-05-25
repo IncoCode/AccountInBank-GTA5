@@ -112,10 +112,26 @@ namespace AccountInBank
             var menu = new Menu( "ATM Menu", new MenuItem[]
             {
                 new MenuButton( "Show balance",
-                    () => { this.ShowOperationStatusMenu( "Balance: $" + this._bank.Balance, true, 3000, null ); } ),
-                new MenuButton( "Deposit", () => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit ); } ),
-                new MenuButton( "Withdrawal", () => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal ); } ),
-                new MenuButton( "Money transfer", () => { this.MoneyTransferActionMenuClick(); } ),
+                    () =>
+                    {
+                        MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+                        this.ShowOperationStatusMenu( "Balance: $" + this._bank.Balance, true, 3000, null );
+                    } ),
+                new MenuButton( "Deposit", () =>
+                {
+                    MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+                    this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit );
+                } ),
+                new MenuButton( "Withdrawal", () =>
+                {
+                    MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+                    this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal );
+                } ),
+                new MenuButton( "Money transfer", () =>
+                {
+                    MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+                    this.MoneyTransferActionMenuClick();
+                } ),
                 new MenuButton( "Close", () =>
                 {
                     this._script.View.CloseAllMenus();
