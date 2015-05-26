@@ -53,7 +53,7 @@ namespace AccountInBank
                 throw new Exception( "Wrong player index!" );
             }
             BankAccount account = this._balances[ playerIndex ];
-            if ( account.Balance + deposit > int.MaxValue - 5 )
+            if ( (double)account.Balance + deposit > int.MaxValue )
             {
                 throw new Exception( "Reached the maximum value!" );
             }
@@ -73,6 +73,10 @@ namespace AccountInBank
             {
                 throw new Exception( "Wrong value!" );
             }
+            if ( (double)player.Money + value > int.MaxValue )
+            {
+                throw new Exception( "Reached the maximum value!" );
+            }
             player.Money += value;
             this._balances[ playerIndex ].Balance -= value;
             this.SaveSettings();
@@ -89,7 +93,7 @@ namespace AccountInBank
             {
                 throw new Exception( "Wrong value!" );
             }
-            if ( this._balances[ targetPlayer ].Balance + value > int.MaxValue - 5 )
+            if ( (double)this._balances[ targetPlayer ].Balance + value > int.MaxValue )
             {
                 throw new Exception( "Reached the maximum value!" );
             }
@@ -110,7 +114,7 @@ namespace AccountInBank
                 }
                 int interest = (int)Math.Round( account.Balance * this._percentsPerDay );
                 account.InterestDate = currDate;
-                if ( account.Balance + interest > int.MaxValue - 5 )
+                if ( (double)account.Balance + interest > int.MaxValue )
                 {
                     return;
                 }
