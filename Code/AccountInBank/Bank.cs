@@ -129,7 +129,7 @@ namespace AccountInBank
                 }
                 int interest = (int)Math.Round( account.Balance * this._percentsPerDay );
                 account.InterestDate = currDate;
-                if ( (double)account.Balance + interest > int.MaxValue )
+                if ( (double)account.Balance + interest > int.MaxValue || interest < 0 )
                 {
                     continue;
                 }
