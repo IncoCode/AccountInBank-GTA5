@@ -110,13 +110,13 @@ namespace AccountInBank
                 BankAccount account = this._balances[ i ];
                 if ( account.InterestDate >= currDate )
                 {
-                    return;
+                    continue;
                 }
                 int interest = (int)Math.Round( account.Balance * this._percentsPerDay );
                 account.InterestDate = currDate;
                 if ( (double)account.Balance + interest > int.MaxValue )
                 {
-                    return;
+                    continue;
                 }
                 account.Balance = account.Balance + interest;
                 if ( Helper.GetPlayerIndex() == i && interest > 0 )
