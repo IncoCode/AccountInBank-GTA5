@@ -41,8 +41,13 @@ namespace AccountInBank
             this.LoadSettings();
         }
 
-        public void DepositMoney( Player player, int deposit )
+        public void DepositMoney( Player player, string depositS )
         {
+            int deposit;
+            if ( !Helper.GetNumWithPercent( depositS, player.Money, out deposit ) )
+            {
+                throw new Exception( "Wrong data!" );
+            }
             if ( deposit < 1 || player.Money < deposit )
             {
                 throw new Exception( "Not enough money!" );
@@ -62,12 +67,17 @@ namespace AccountInBank
             this.SaveSettings();
         }
 
-        public void WithdrawalMoney( Player player, int value )
+        public void WithdrawalMoney( Player player, string valueS )
         {
+            int value;
             int playerIndex = Helper.GetPlayerIndex();
             if ( playerIndex > 3 )
             {
                 throw new Exception( "Wrong player index!" );
+            }
+            if ( !Helper.GetNumWithPercent( valueS, this._balances[ playerIndex ].Balance, out value ) )
+            {
+                throw new Exception( "Wrong data!" );
             }
             if ( value < 1 || value > this._balances[ playerIndex ].Balance )
             {
@@ -82,12 +92,17 @@ namespace AccountInBank
             this.SaveSettings();
         }
 
-        public void TransferMoney( int targetPlayer, int value )
+        public void TransferMoney( int targetPlayer, string valueS )
         {
             int playerIndex = Helper.GetPlayerIndex();
+            int value;
             if ( targetPlayer == playerIndex )
             {
                 throw new Exception( "Wrong target index!" );
+            }
+            if ( !Helper.GetNumWithPercent( valueS, this._balances[ playerIndex ].Balance, out value ) )
+            {
+                throw new Exception( "Wrong data!" );
             }
             if ( value < 1 || value > this._balances[ playerIndex ].Balance )
             {

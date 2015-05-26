@@ -150,34 +150,28 @@ namespace AccountInBank
         private void ATMBalanceActionMenuClick( ATMBalanceAction action )
         {
             string valueS = Game.GetUserInput( "Enter value...", 9 );
-            int deposit;
-            string status = "Incorrect value!";
-            Color color = Color.Red;
-            if ( int.TryParse( valueS, out deposit ) )
+            string status = "Success!";
+            Color color = Color.LimeGreen;
+            try
             {
-                status = "Success!";
-                color = Color.LimeGreen;
-                try
+                switch ( action )
                 {
-                    switch ( action )
-                    {
-                        case ATMBalanceAction.Deposit:
-                            this._bank.DepositMoney( Game.Player, deposit );
-                            break;
+                    case ATMBalanceAction.Deposit:
+                        this._bank.DepositMoney( Game.Player, valueS );
+                        break;
 
-                        case ATMBalanceAction.Withdrawal:
-                            this._bank.WithdrawalMoney( Game.Player, deposit );
-                            break;
+                    case ATMBalanceAction.Withdrawal:
+                        this._bank.WithdrawalMoney( Game.Player, valueS );
+                        break;
 
-                        default:
-                            return;
-                    }
+                    default:
+                        return;
                 }
-                catch ( Exception exception )
-                {
-                    color = Color.Red;
-                    status = exception.Message;
-                }
+            }
+            catch ( Exception exception )
+            {
+                color = Color.Red;
+                status = exception.Message;
             }
             this.ShowOperationStatusMenu( status, true, 2000, color );
         }
@@ -198,23 +192,17 @@ namespace AccountInBank
                 new MenuButton( "Next", () =>
                 {
                     string valueS = Game.GetUserInput( "Enter value...", 9 );
-                    int value;
-                    string status = "Incorrect value!";
-                    Color color = Color.Red;
-                    if ( int.TryParse( valueS, out value ) )
+                    var status = "Success!";
+                    var color = Color.LimeGreen;
+                    try
                     {
-                        status = "Success!";
-                        color = Color.LimeGreen;
-                        try
-                        {
-                            int target = ( (int)availableCharacters[ this._selectedChar ] );
-                            this._bank.TransferMoney( target, value );
-                        }
-                        catch ( Exception exception )
-                        {
-                            color = Color.Red;
-                            status = exception.Message;
-                        }
+                        int target = ( (int)availableCharacters[ this._selectedChar ] );
+                        this._bank.TransferMoney( target, valueS );
+                    }
+                    catch ( Exception exception )
+                    {
+                        color = Color.Red;
+                        status = exception.Message;
                     }
                     this.ShowOperationStatusMenu( status, true, 2000, color );
                 } )

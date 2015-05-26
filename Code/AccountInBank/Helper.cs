@@ -157,5 +157,42 @@ namespace AccountInBank
             Function.Call<bool>( Hash.STAT_GET_INT, hashArrests, &arrests, -1 );
             return arrests;
         }
+
+        /// <summary>
+        /// Can parse signle numbers or return a percent from baseVal (then valueS should be like "50%").
+        /// Also support ALL (equivalent to 100%).
+        /// </summary>
+        /// <param name="valueS"></param>
+        /// <param name="baseVal"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool GetNumWithPercent( string valueS, int baseVal, out int value )
+        {
+            valueS = valueS.Trim();
+            if ( int.TryParse( valueS, out value ) )
+            {
+                return true;
+            }
+            if ( valueS.ToUpper() == "ALL" )
+            {
+                value = baseVal;
+                return true;
+            }
+            if ( !valueS.EndsWith( "%" ) )
+            {
+                return false;
+            }
+            int percent;
+            if ( !int.TryParse( valueS.Substring( 0, valueS.Length - 1 ), out percent ) )
+            {
+                return false;
+            }
+            if ( percent < 1 || percent > 100 )
+            {
+                return false;
+            }
+            value = (int)( baseVal * ( percent / (float)100 ) );
+            return true;
+        }
     }
 }
