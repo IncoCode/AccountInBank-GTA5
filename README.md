@@ -1,6 +1,8 @@
 # AccountInBank-GTA5
 [![Build Status](https://ci.appveyor.com/api/projects/status/bm28vepxi85dmqn5/branch/master?svg=true)](https://ci.appveyor.com/project/IncoCode/accountinbank-gta5)
 
+<img src="img/poster.jpg" alt="alt text" width="400" height="462">
+
 This script lets you store ~~stolen~~ your money in bank account and earn interest (0.001% per day by default). Also you can transfer money between characters accounts.
 
 In v1.0.2 (and above) you can enable some hardcore features: LoseCashOnArrest and LoseCashOnDeath. Just change False to True to enable desired feature in AccountInBankS.ini .
