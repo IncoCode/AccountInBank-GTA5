@@ -1,6 +1,7 @@
 ﻿#region Using
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using AccountInBank.Model;
@@ -20,6 +21,7 @@ namespace AccountInBank
         private readonly IniFile _settings;
         private readonly MySettings _mySettings;
         private readonly CharacterStat[] _charactersStats;
+        private List<Blip> _atmBlips;
 
         public AccountInBank()
         {
@@ -37,6 +39,19 @@ namespace AccountInBank
             this._mySettings = new MySettings();
             this._charactersStats = new CharacterStat[ 3 ];
             this.LoadCharactersStats();
+            if ( this._mySettings.ShowAllATMLocations )
+            {
+                this.PrintAllBlips();
+            }
+        }
+
+        private void PrintAllBlips()
+        {
+            this._atmBlips = new List<Blip>();
+            foreach ( ATM atm in this._atmList )
+            {
+                this._atmBlips.Add( atm.CreateBlip( false, true ) );
+            }
         }
 
         private void _menuController_MenuClosed( object sender, EventArgs e )

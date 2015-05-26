@@ -3,6 +3,7 @@
 using System;
 using GTA;
 using GTA.Math;
+using GTA.Native;
 
 #endregion
 
@@ -26,12 +27,17 @@ namespace AccountInBank.Model
             }
         }
 
-        public void CreateBlip()
+        public Blip CreateBlip( bool showRoute = true, bool isBlipShortRange = false )
         {
             this.Blip = World.CreateBlip( this.Position );
             this.Blip.Sprite = 108; // dollar sprite
             this.Blip.Color = BlipColor.Green;
-            this.Blip.ShowRoute = true;
+            this.Blip.ShowRoute = showRoute;
+            if ( isBlipShortRange )
+            {
+                Function.Call( Hash.SET_BLIP_AS_SHORT_RANGE, this.Blip.Handle, true );
+            }
+            return this.Blip;
         }
 
         public bool IsInRange( Vector3 position, int range = 2 )

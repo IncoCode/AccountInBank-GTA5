@@ -17,6 +17,7 @@ namespace AccountInBank
         public Keys OpenATMMenuKey { get; private set; }
         public bool LoseCashOnDeath { get; private set; }
         public bool LoseCashOnArrest { get; private set; }
+        public bool ShowAllATMLocations { get; private set; }
 
         #endregion
 
@@ -32,6 +33,7 @@ namespace AccountInBank
             this.OpenATMMenuKey = Helper.StringToKey( this._settings.Read( "OpenATMMenuKey", "Settings", "O" ), Keys.O );
             this.LoseCashOnDeath = this._settings.Read( "LoseCachOnDeath", "Settings", false );
             this.LoseCashOnArrest = this._settings.Read( "LoseCachOnArrest", "Settings", false );
+            this.ShowAllATMLocations = this._settings.Read( "ShowAllATMLocations", "Settings", false );
         }
     }
 }
