@@ -38,6 +38,12 @@ If you found ATM that not exists in the list - let me know.
 
 Changelog
 --------------
+v1.0.4
+- Implemented ability to enter percents as value (just enter 50%, 37% etc; ALL also is supported);
+- Added new atm location;
+- Implemented option for show all atm icons on the map (can be activated in the AccountInBankS.ini file);
+- Some fixes.
+
 v1.0.3
 - Default percent now 0.001%;
 - Added animation playback.
