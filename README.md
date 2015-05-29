@@ -38,6 +38,9 @@ If you found ATM that not exists in the list - let me know.
 
 Changelog
 --------------
+v1.0.5
+- Added ability to change menu navigation keys.
+
 v1.0.4
 - Implemented ability to enter percents as value (just enter 50%, 37% etc; ALL also is supported);
 - Added new atm location;
