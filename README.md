@@ -39,7 +39,7 @@ If you found ATM that not exists in the list - let me know.
 Changelog
 --------------
 v1.0.5
-- Added ability to change menu navigation keys.
+- Added ability to change menu navigation keys (full list [here](https://msdn.microsoft.com/en-us/library/system.windows.forms.keys%28v=vs.110%29.aspx)).
 
 v1.0.4
 - Implemented ability to enter percents as value (just enter 50%, 37% etc; ALL also is supported);
