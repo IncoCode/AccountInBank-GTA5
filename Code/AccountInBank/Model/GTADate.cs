@@ -21,7 +21,7 @@ namespace AccountInBank.Model
             get { return this._month; }
             set
             {
-                if ( value < 1 || value > 12 )
+                if ( value < 0 || value > 11 )
                 {
                     throw new InvalidDataException();
                 }
