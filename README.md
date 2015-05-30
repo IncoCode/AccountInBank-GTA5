@@ -38,6 +38,9 @@ If you found ATM that not exists in the list - let me know.
 
 Changelog
 --------------
+v1.0.6
+- Bug fixes.
+
 v1.0.5
 - Added ability to change menu navigation keys (full list [here](https://msdn.microsoft.com/en-us/library/system.windows.forms.keys%28v=vs.110%29.aspx)).
 
