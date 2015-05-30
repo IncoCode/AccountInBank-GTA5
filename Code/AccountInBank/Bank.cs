@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AccountInBank.Model;
 using GTA;
 using Ini;
@@ -120,6 +121,16 @@ namespace AccountInBank
         public void AccrueInterest()
         {
             GTADate currDate = Helper.GetCurrentDate();
+            if ( currDate.Year == 2010 && this._balances.Any( v => v.Value.InterestDate.Year > 2010 ) )
+            {
+                for ( int i = 1; i <= 3; i++ )
+                {
+                    BankAccount account = this._balances[ i ];
+                    account.InterestDate = new GTADate( 2010, 0, 1 );
+                }
+                this.SaveSettings();
+                return;
+            }
             for ( int i = 1; i <= 3; i++ )
             {
                 BankAccount account = this._balances[ i ];
