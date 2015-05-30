@@ -30,7 +30,7 @@ namespace AccountInBank.Model
         public Blip CreateBlip( bool showRoute = true, bool isBlipShortRange = false )
         {
             this.Blip = World.CreateBlip( this.Position );
-            this.Blip.Sprite = 108; // dollar sprite
+            this.Blip.Sprite = BlipSprite.DollarSign;
             this.Blip.Color = BlipColor.Green;
             this.Blip.ShowRoute = showRoute;
             if ( isBlipShortRange )
