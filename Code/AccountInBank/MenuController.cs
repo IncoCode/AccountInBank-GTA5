@@ -20,11 +20,11 @@ namespace AccountInBank
     {
         private readonly Bank _bank;
         private readonly Script _script;
-        private int _selectedChar = 0;
+        private int _selectedChar;
 
         public event EventHandler<EventArgs> MenuClosed;
 
-        public MenuController( Bank bank, Player player, Script script )
+        public MenuController( Bank bank, Script script )
         {
             this._bank = bank;
             this._script = script;
@@ -73,7 +73,7 @@ namespace AccountInBank
             Color? headerColor = null, Color? unselectedColor = null, Color? selectedColor = null )
         {
             var label = new MenuLabel( status );
-            var menu = new Menu( "Status", new MenuItem[]
+            var menu = new Menu( "Status", new IMenuItem[]
             {
                 label
             } )
@@ -109,40 +109,48 @@ namespace AccountInBank
 
         public void ShowBankMenu()
         {
-            var menu = new Menu( "ATM Menu", new MenuItem[]
+            var showBalanceBnt = new MenuButton( "Show balance" );
+            showBalanceBnt.Activated += ( sender, args ) =>
             {
-                new MenuButton( "Show balance",
-                    () =>
-                    {
-                        MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
-                        this.ShowOperationStatusMenu( "Balance: $" + this._bank.Balance, true, 3000, null );
-                    } ),
-                new MenuButton( "Deposit", () =>
+                MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+                this.ShowOperationStatusMenu( "Balance: $" + this._bank.Balance, true, 3000, null );
+            };
+
+            var depositBtn = new MenuButton( "Deposit" );
+            depositBtn.Activated += ( sender, args ) =>
+            {
+                MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+                this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit );
+            };
+
+            var withdrawalBtn = new MenuButton( "Withdrawal" );
+            withdrawalBtn.Activated += ( sender, args ) =>
+            {
+                MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+                this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal );
+            };
+
+            var moneyTransferBtn = new MenuButton( "Money transfer" );
+            moneyTransferBtn.Activated += ( sender, args ) =>
+            {
+                MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+                this.MoneyTransferActionMenuClick();
+            };
+
+            var closeBtn = new MenuButton( "Close" );
+            closeBtn.Activated += ( sender, args ) =>
+            {
+                this._script.View.CloseAllMenus();
+                // fire OnClose event
+                var onMenuClosed = this.MenuClosed;
+                if ( onMenuClosed != null )
                 {
-                    MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
-                    this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit );
-                } ),
-                new MenuButton( "Withdrawal", () =>
-                {
-                    MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
-                    this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal );
-                } ),
-                new MenuButton( "Money transfer", () =>
-                {
-                    MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
-                    this.MoneyTransferActionMenuClick();
-                } ),
-                new MenuButton( "Close", () =>
-                {
-                    this._script.View.CloseAllMenus();
-                    // fire OnClose event
-                    var onMenuClosed = this.MenuClosed;
-                    if ( onMenuClosed != null )
-                    {
-                        onMenuClosed( this, new EventArgs() );
-                    }
-                } ),
-            } );
+                    onMenuClosed( this, new EventArgs() );
+                }
+            };
+
+            var menu = new Menu( "ATM Menu",
+                new IMenuItem[] { showBalanceBnt, depositBtn, withdrawalBtn, moneyTransferBtn, closeBtn } );
             SetDefaultColors( menu );
             this.ShowMenu( menu );
         }
@@ -185,28 +193,30 @@ namespace AccountInBank
                     .Cast<PlayerModel>()
                     .Where( p => (int)p != playerIndex && p != PlayerModel.None )
                     .ToArray();
-            var menu = new Menu( "Money transfer", new MenuItem[]
+            var charactedEnumScroller = new MenuEnumScroller( "Character", "",
+                Array.ConvertAll( availableCharacters, p => p.ToString() ) );
+            charactedEnumScroller.Changed += ( sender, args ) => this._selectedChar = charactedEnumScroller.Index;
+
+            var nextBtn = new MenuButton( "Next" );
+            nextBtn.Activated += ( sender, args ) =>
             {
-                new MenuEnumScroller( "Character", "", i => { this._selectedChar = i; }, i => { },
-                    Array.ConvertAll( availableCharacters, p => p.ToString() ) ),
-                new MenuButton( "Next", () =>
+                string valueS = Game.GetUserInput( "Enter value...", 9 );
+                var status = "Success!";
+                var color = Color.LimeGreen;
+                try
                 {
-                    string valueS = Game.GetUserInput( "Enter value...", 9 );
-                    var status = "Success!";
-                    var color = Color.LimeGreen;
-                    try
-                    {
-                        int target = ( (int)availableCharacters[ this._selectedChar ] );
-                        this._bank.TransferMoney( target, valueS );
-                    }
-                    catch ( Exception exception )
-                    {
-                        color = Color.Red;
-                        status = exception.Message;
-                    }
-                    this.ShowOperationStatusMenu( status, true, 2000, color );
-                } )
-            } );
+                    int target = ( (int)availableCharacters[ this._selectedChar ] );
+                    this._bank.TransferMoney( target, valueS );
+                }
+                catch ( Exception exception )
+                {
+                    color = Color.Red;
+                    status = exception.Message;
+                }
+                this.ShowOperationStatusMenu( status, true, 2000, color );
+            };
+
+            var menu = new Menu( "Money transfer", new IMenuItem[] { charactedEnumScroller, nextBtn } );
             menu.Width += 25;
             SetDefaultColors( menu );
             this.ShowMenu( menu );

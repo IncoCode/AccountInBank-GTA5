@@ -33,7 +33,7 @@ namespace AccountInBank
             this._atmList = Helper.GetAllATMs();
             this._bank = new Bank( this._settings );
 
-            this._menuController = new MenuController( this._bank, Game.Player, this );
+            this._menuController = new MenuController( this._bank, this );
             this._menuController.MenuClosed += this._menuController_MenuClosed;
 
             this._mySettings = new MySettings();
