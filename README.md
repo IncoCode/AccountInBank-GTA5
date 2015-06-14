@@ -21,7 +21,7 @@ Requirements
 - Microsoft .NET Framework 4.5;
 - Microsoft Visual C++ Redistributable Package for Visual Studio 2013 (x64);
 - Script Hook V;
-- [Community Script Hook V .NET](https://ci.appveyor.com/project/crosire/scripthookvdotnet%C2%A0/build/artifacts).
+- [Community Script Hook V .NET v1.0](https://github.com/crosire/scripthookvdotnet/releases/tag/v1.0).
 
 How to install
 --------------
@@ -38,6 +38,9 @@ If you found ATM that not exists in the list - let me know.
 
 Changelog
 --------------
+v1.0.7
+- Compatibility with .NET ScriptHook v1.0.
+
 v1.0.6
 - Bug fixes.
 
