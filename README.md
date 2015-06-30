@@ -20,13 +20,13 @@ Requirements
 
 - Microsoft .NET Framework 4.5;
 - Microsoft Visual C++ Redistributable Package for Visual Studio 2013 (x64);
-- Script Hook V;
+- [Script Hook V](http://gtaforums.com/topic/788343-script-hook-v/);
 - [Community Script Hook V .NET v1.0](https://github.com/crosire/scripthookvdotnet/releases/tag/v1.0).
 
 How to install
 --------------
 
-Place the .dll files into your "**scripts**" folder, located in the main GTA V directory. If it doesn't exist, create it.
+Place the .dll and .ini files into your "**scripts**" folder, located in the main GTA V directory. If it doesn't exist, create it.
 
 Known issues
 --------------
