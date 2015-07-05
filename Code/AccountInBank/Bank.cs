@@ -102,8 +102,20 @@ namespace AccountInBank
             {
                 throw new Exception( "Reached the maximum value!" );
             }
+            int tax = 0;
+            if ( this._mySettings.EnableWithdrawalTax )
+            {
+                if ( !Helper.GetNumWithPercent( this._mySettings.WithdrawalTax, value, out tax, true ) )
+                {
+                    throw new Exception( "Wrong WithdrawalTax value!" );
+                }
+                if ( value + tax > this._balances[ playerIndex ].Balance )
+                {
+                    value -= value + tax - this._balances[ playerIndex ].Balance;
+                }
+            }
             player.Money += value;
-            this._balances[ playerIndex ].Balance -= value;
+            this._balances[ playerIndex ].Balance -= value + tax;
             this.SaveSettings();
         }
 
