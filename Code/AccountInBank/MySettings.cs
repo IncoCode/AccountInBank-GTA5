@@ -26,6 +26,13 @@ namespace AccountInBank
         public Keys UpKey { get; private set; }
         public Keys DownKey { get; private set; }
 
+        public bool EnableDepositTax { get; set; }
+        public string DepositTax { get; set; }
+        public bool EnableWithdrawalTax { get; set; }
+        public string WithdrawalTax { get; set; }
+        public bool EnableServiceTax { get; set; } // every day
+        public string ServiceTax { get; set; }
+
         #endregion
 
         public MySettings()
@@ -53,6 +60,13 @@ namespace AccountInBank
             this.UpKey = Helper.StringToKey( this._settings.Read( "UpKey", "MenuNavigation", "NumPad8" ), Keys.NumPad8 );
             this.DownKey = Helper.StringToKey( this._settings.Read( "DownKey", "MenuNavigation", "NumPad2" ),
                 Keys.NumPad2 );
+
+            this.EnableDepositTax = this._settings.Read( "EnableDepositTax", "Taxes", false );
+            this.EnableWithdrawalTax = this._settings.Read( "EnableWithdrawalTax", "Taxes", false );
+            this.EnableServiceTax = this._settings.Read( "EnableServiceTax", "Taxes", false );
+            this.DepositTax = this._settings.Read( "DepositTax", "Taxes", "3%" );
+            this.WithdrawalTax = this._settings.Read( "WithdrawalTax", "Taxes", "5%" );
+            this.ServiceTax = this._settings.Read( "ServiceTax", "Taxes", "0.5%" );
         }
     }
 }
