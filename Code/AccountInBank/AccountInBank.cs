@@ -46,6 +46,29 @@ namespace AccountInBank
             this.ApplyMenuNavigationKeys();
         }
 
+        protected override void Dispose( bool A_0 )
+        {
+            if ( A_0 )
+            {
+                if ( this._nearestATM != null )
+                {
+                    this._nearestATM.Dispose();
+                    this._nearestATM = null;
+                }
+                foreach ( ATM atm in this._atmList )
+                {
+                    atm.Dispose();
+                }
+                foreach ( Blip blip in this._atmBlips )
+                {
+                    if ( blip != null && blip.Exists() )
+                    {
+                        blip.Remove();
+                    }
+                }
+            }
+        }
+
         private void ApplyMenuNavigationKeys()
         {
             this.ActivateKey = this._mySettings.ActivateKey;
@@ -121,8 +144,11 @@ namespace AccountInBank
                 }
                 else
                 {
-                    this._nearestATM.Dispose();
-                    this._nearestATM = null;
+                    if ( this._nearestATM != null )
+                    {
+                        this._nearestATM.Dispose();
+                        this._nearestATM = null;
+                    }
                 }
             }
             else if ( e.KeyCode == this._mySettings.OpenATMMenuKey )

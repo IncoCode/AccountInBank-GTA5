@@ -53,7 +53,10 @@ namespace AccountInBank.Model
             {
                 if ( disposing )
                 {
-                    this.Blip.Remove();
+                    if ( this.Blip != null && this.Blip.Exists() )
+                    {
+                        this.Blip.Remove();
+                    }
                 }
             }
             this._disposed = true;
