@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows.Forms;
 using AccountInBank.Model;
 using GTA;
@@ -166,8 +167,9 @@ namespace AccountInBank
         /// <param name="valueS"></param>
         /// <param name="baseVal"></param>
         /// <param name="value"></param>
+        /// <param name="ignoreAll"></param>
         /// <returns></returns>
-        public static bool GetNumWithPercent( string valueS, int baseVal, out int value )
+        public static bool GetNumWithPercent( string valueS, int baseVal, out int value, bool ignoreAll = false )
         {
             valueS = valueS.Trim();
             if ( int.TryParse( valueS, out value ) )
@@ -176,6 +178,10 @@ namespace AccountInBank
             }
             if ( valueS.ToUpper() == "ALL" )
             {
+                if ( ignoreAll )
+                {
+                    return false;
+                }
                 value = baseVal;
                 return true;
             }
@@ -183,16 +189,18 @@ namespace AccountInBank
             {
                 return false;
             }
-            int percent;
-            if ( !int.TryParse( valueS.Substring( 0, valueS.Length - 1 ), out percent ) )
+            float percent;
+            if (
+                !float.TryParse( valueS.Substring( 0, valueS.Length - 1 ), NumberStyles.Number,
+                    CultureInfo.CreateSpecificCulture( "en-US" ), out percent ) )
             {
                 return false;
             }
-            if ( percent < 1 || percent > 100 )
+            if ( percent < 0 || percent > 100 )
             {
                 return false;
             }
-            value = (int)( baseVal * ( percent / (float)100 ) );
+            value = (int)( baseVal * ( percent / 100 ) );
             return true;
         }
     }
