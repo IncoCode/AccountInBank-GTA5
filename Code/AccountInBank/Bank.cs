@@ -15,6 +15,7 @@ namespace AccountInBank
     {
         private double _percentsPerDay = 0.1;
         private readonly IniFile _settings;
+        private readonly MySettings _mySettings;
         private readonly Dictionary<int, BankAccount> _balances;
 
         #region Fields
@@ -35,9 +36,10 @@ namespace AccountInBank
 
         #endregion
 
-        public Bank( IniFile settings )
+        public Bank( IniFile settings, MySettings mySettings )
         {
             this._settings = settings;
+            this._mySettings = mySettings;
             this._balances = new Dictionary<int, BankAccount>();
             this.LoadSettings();
         }
@@ -63,7 +65,19 @@ namespace AccountInBank
             {
                 throw new Exception( "Reached the maximum value!" );
             }
-            player.Money -= deposit;
+            int tax = 0;
+            if ( this._mySettings.EnableDepositTax )
+            {
+                if ( !Helper.GetNumWithPercent( this._mySettings.DepositTax, deposit, out tax, true ) )
+                {
+                    throw new Exception( "Wrong DepositTax value!" );
+                }
+                if ( deposit + tax > player.Money )
+                {
+                    deposit -= deposit + tax - player.Money;
+                }
+            }
+            player.Money -= deposit + tax;
             account.Balance += deposit;
             this.SaveSettings();
         }
