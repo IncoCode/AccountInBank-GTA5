@@ -200,6 +200,10 @@ namespace AccountInBank
             {
                 return false;
             }
+            if ( percent == 100 && ignoreAll )
+            {
+                return false;
+            }
             value = (int)( baseVal * ( percent / 100 ) );
             return true;
         }
