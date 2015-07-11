@@ -30,13 +30,14 @@ namespace AccountInBank
             this.Tick += this.AccountInBank_Tick;
 
             this._settings = new IniFile( "scripts\\AccountInBank.ini" );
+            this._mySettings = new MySettings();
+
             this._atmList = Helper.GetAllATMs();
             this._bank = new Bank( this._settings, this._mySettings );
 
             this._menuController = new MenuController( this._bank, this );
             this._menuController.MenuClosed += this._menuController_MenuClosed;
 
-            this._mySettings = new MySettings();
             this._charactersStats = new CharacterStat[ 3 ];
             this.LoadCharactersStats();
             if ( this._mySettings.ShowAllATMLocations )
@@ -44,6 +45,7 @@ namespace AccountInBank
                 this.PrintAllBlips();
             }
             this.ApplyMenuNavigationKeys();
+            this._atmBlips = new List<Blip>();
         }
 
         protected override void Dispose( bool A_0 )
@@ -54,10 +56,6 @@ namespace AccountInBank
                 {
                     this._nearestATM.Dispose();
                     this._nearestATM = null;
-                }
-                foreach ( ATM atm in this._atmList )
-                {
-                    atm.Dispose();
                 }
                 foreach ( Blip blip in this._atmBlips )
                 {
@@ -81,7 +79,6 @@ namespace AccountInBank
 
         private void PrintAllBlips()
         {
-            this._atmBlips = new List<Blip>();
             foreach ( ATM atm in this._atmList )
             {
                 this._atmBlips.Add( atm.CreateBlip( false, true ) );
@@ -101,12 +98,13 @@ namespace AccountInBank
             this._bank.AccrueInterest();
 
             int playerId = Helper.GetPlayerIndex() - 1;
+            CharacterStat charStats = this._charactersStats[ playerId ];
             if ( this._mySettings.LoseCashOnArrest )
             {
                 int arrests = Helper.GetArrestsValueStat( playerId );
-                if ( arrests > this._charactersStats[ playerId ].Arrests )
+                if ( arrests > charStats.Arrests )
                 {
-                    this._charactersStats[ playerId ].Arrests = arrests;
+                    charStats.Arrests = arrests;
                     Game.Player.Money = 0;
                     UI.Notify( "Oh, no! You lost all your cash!" );
                 }
@@ -114,9 +112,9 @@ namespace AccountInBank
             if ( this._mySettings.LoseCashOnDeath )
             {
                 int deaths = Helper.GetDeathsValueStat( playerId );
-                if ( deaths > this._charactersStats[ playerId ].Deaths )
+                if ( deaths > charStats.Deaths )
                 {
-                    this._charactersStats[ playerId ].Deaths = deaths;
+                    charStats.Deaths = deaths;
                     Game.Player.Money = 0;
                     UI.Notify( "Oh, no! You lost all your cash!" );
                 }

@@ -26,14 +26,14 @@ namespace AccountInBank
         public Keys UpKey { get; private set; }
         public Keys DownKey { get; private set; }
 
-        public bool EnableDepositTax { get; set; }
-        public string DepositTax { get; set; }
-        public bool EnableWithdrawalTax { get; set; }
-        public string WithdrawalTax { get; set; }
-        public bool EnableServiceTax { get; set; } // every day
-        public string ServiceTax { get; set; }
-        public bool EnableMoneyTransferTax { get; set; }
-        public string MoneyTransferTax { get; set; }
+        public bool EnableDepositTax { get; private set; }
+        public string DepositTax { get; private set; }
+        public bool EnableWithdrawalTax { get; private set; }
+        public string WithdrawalTax { get; private set; }
+        public bool EnableServiceTax { get; private set; } // every day
+        public string ServiceTax { get; private set; }
+        public bool EnableMoneyTransferTax { get; private set; }
+        public string MoneyTransferTax { get; private set; }
 
         #endregion
 
