@@ -164,6 +164,7 @@ namespace AccountInBank
                 {
                     continue;
                 }
+                this.ServiceTax( i );
                 int interest = (int)Math.Round( account.Balance * this._percentsPerDay );
                 account.InterestDate = currDate;
                 if ( (double)account.Balance + interest > int.MaxValue || interest < 0 )
@@ -177,6 +178,29 @@ namespace AccountInBank
                 }
             }
             this.SaveSettings();
+        }
+
+        private void ServiceTax( int index )
+        {
+            if ( !this._mySettings.EnableServiceTax )
+            {
+                return;
+            }
+            BankAccount account = this._balances[ index ];
+            int tax;
+            if ( !Helper.GetNumWithPercent( this._mySettings.ServiceTax, account.Balance, out tax, true ) )
+            {
+                return;
+            }
+            if ( tax > account.Balance )
+            {
+                return;
+            }
+            account.Balance -= tax;
+            if ( Helper.GetPlayerIndex() == index && tax > 0 )
+            {
+                UI.Notify( "Service tax: $" + tax );
+            }
         }
 
         private void SaveSettings()

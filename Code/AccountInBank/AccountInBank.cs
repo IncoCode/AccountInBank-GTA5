@@ -31,7 +31,7 @@ namespace AccountInBank
 
             this._settings = new IniFile( "scripts\\AccountInBank.ini" );
             this._atmList = Helper.GetAllATMs();
-            this._bank = new Bank( this._settings, _mySettings );
+            this._bank = new Bank( this._settings, this._mySettings );
 
             this._menuController = new MenuController( this._bank, this );
             this._menuController.MenuClosed += this._menuController_MenuClosed;
