@@ -139,7 +139,19 @@ namespace AccountInBank
             {
                 throw new Exception( "Reached the maximum value!" );
             }
-            this._balances[ playerIndex ].Balance -= value;
+            int tax = 0;
+            if ( this._mySettings.EnableMoneyTransferTax )
+            {
+                if ( !Helper.GetNumWithPercent( this._mySettings.MoneyTransferTax, value, out tax, true ) )
+                {
+                    throw new Exception( "Wrong MoneyTransferTax value!" );
+                }
+                if ( value + tax > this._balances[ playerIndex ].Balance )
+                {
+                    value -= value + tax - this._balances[ playerIndex ].Balance;
+                }
+            }
+            this._balances[ playerIndex ].Balance -= value + tax;
             this._balances[ targetPlayer ].Balance += value;
             this.SaveSettings();
         }
