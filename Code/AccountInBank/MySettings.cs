@@ -32,6 +32,8 @@ namespace AccountInBank
         public string WithdrawalTax { get; set; }
         public bool EnableServiceTax { get; set; } // every day
         public string ServiceTax { get; set; }
+        public bool EnableMoneyTransferTax { get; set; }
+        public string MoneyTransferTax { get; set; }
 
         #endregion
 
@@ -64,9 +66,11 @@ namespace AccountInBank
             this.EnableDepositTax = this._settings.Read( "EnableDepositTax", "Taxes", false );
             this.EnableWithdrawalTax = this._settings.Read( "EnableWithdrawalTax", "Taxes", false );
             this.EnableServiceTax = this._settings.Read( "EnableServiceTax", "Taxes", false );
+            this.EnableMoneyTransferTax = this._settings.Read( "EnableMoneyTransferTax", "Taxes", false );
             this.DepositTax = this._settings.Read( "DepositTax", "Taxes", "3%" );
             this.WithdrawalTax = this._settings.Read( "WithdrawalTax", "Taxes", "5%" );
             this.ServiceTax = this._settings.Read( "ServiceTax", "Taxes", "0.5%" );
+            this.MoneyTransferTax = this._settings.Read( "MoneyTransferTax", "Taxes", "2%" );
         }
     }
 }
