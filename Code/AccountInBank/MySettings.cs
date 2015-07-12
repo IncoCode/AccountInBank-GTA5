@@ -47,8 +47,8 @@ namespace AccountInBank
         {
             this.MarkATMKey = Helper.StringToKey( this._settings.Read( "MarkATMKey", "Settings", "B" ), Keys.B );
             this.OpenATMMenuKey = Helper.StringToKey( this._settings.Read( "OpenATMMenuKey", "Settings", "O" ), Keys.O );
-            this.LoseCashOnDeath = this._settings.Read( "LoseCachOnDeath", "Settings", false );
-            this.LoseCashOnArrest = this._settings.Read( "LoseCachOnArrest", "Settings", false );
+            this.LoseCashOnDeath = this._settings.Read( "LoseCashOnDeath", "Settings", false );
+            this.LoseCashOnArrest = this._settings.Read( "LoseCashOnArrest", "Settings", false );
             this.ShowAllATMLocations = this._settings.Read( "ShowAllATMLocations", "Settings", false );
 
             this.ActivateKey = Helper.StringToKey( this._settings.Read( "ActivateKey", "MenuNavigation", "NumPad5" ),
@@ -63,10 +63,10 @@ namespace AccountInBank
             this.DownKey = Helper.StringToKey( this._settings.Read( "DownKey", "MenuNavigation", "NumPad2" ),
                 Keys.NumPad2 );
 
-            this.EnableDepositTax = this._settings.Read( "EnableDepositTax", "Taxes", false );
-            this.EnableWithdrawalTax = this._settings.Read( "EnableWithdrawalTax", "Taxes", false );
+            this.EnableDepositTax = this._settings.Read( "EnableDepositTax", "Taxes", true );
+            this.EnableWithdrawalTax = this._settings.Read( "EnableWithdrawalTax", "Taxes", true );
             this.EnableServiceTax = this._settings.Read( "EnableServiceTax", "Taxes", false );
-            this.EnableMoneyTransferTax = this._settings.Read( "EnableMoneyTransferTax", "Taxes", false );
+            this.EnableMoneyTransferTax = this._settings.Read( "EnableMoneyTransferTax", "Taxes", true );
             this.DepositTax = this._settings.Read( "DepositTax", "Taxes", "3%" );
             this.WithdrawalTax = this._settings.Read( "WithdrawalTax", "Taxes", "5%" );
             this.ServiceTax = this._settings.Read( "ServiceTax", "Taxes", "0.5%" );
