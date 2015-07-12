@@ -5,8 +5,6 @@
 
 This script lets you store ~~stolen~~ your money in bank account and earn interest (0.001% per day by default). Also you can transfer money between characters accounts.
 
-In v1.0.2 (and above) you can enable some hardcore features: LoseCashOnArrest and LoseCashOnDeath. Just change False to True to enable desired feature in AccountInBankS.ini .
-
 Maximum balance: **2 147 483 647** for _each_ character.
 
 How to use
@@ -18,10 +16,10 @@ How to use
 Requirements 
 --------------
 
-- Microsoft .NET Framework 4.5;
-- Microsoft Visual C++ Redistributable Package for Visual Studio 2013 (x64);
+- Microsoft [.NET Framework 4.5](https://www.microsoft.com/download/details.aspx?id=30653);
+- Microsoft [Visual C++ Redistributable Package for Visual Studio 2013 (x64)](https://www.microsoft.com/download/details.aspx?id=40784);
 - [Script Hook V](http://gtaforums.com/topic/788343-script-hook-v/);
-- [Community Script Hook V .NET v1.0](https://github.com/crosire/scripthookvdotnet/releases/tag/v1.0).
+- [Community Script Hook V .NET v1.1](https://github.com/crosire/scripthookvdotnet/releases/tag/v1.1).
 
 How to install
 --------------
@@ -32,12 +30,35 @@ Known issues
 --------------
 Don't type numbers using your numpad. Sometimes it's works incorrect.
 
+Settings
+--------------
+**AccountInBankS.ini** file contains some mod settings:
+
+Setting name | Valid values | Description
+--- | --- | ---
+MarkATMKey | [Look here](https://msdn.microsoft.com/en-us/library/system.windows.forms.keys(v=vs.110).aspx) | The key which marks the nearest ATM on the map
+OpenATMMenuKey | [Look here](https://msdn.microsoft.com/en-us/library/system.windows.forms.keys(v=vs.110).aspx) | The key which open ATM menu if you are near some ATM
+LoseCashOnDeath | True / False | Lose all cash when you die
+LoseCashOnArrest | True / False | Lose all cash when you get arrested
+ShowAllATMLocations | True / False | Show all ATM locations on the map
+EnableDepositTax | True / False | Enables tax on new deposits
+EnableWithdrawalTax | True / False | Enables tax on withdrawals
+EnableServiceTax | True / False | Enables service tax (debited every day)
+EnableMoneyTransferTax | True / False | Enables tax on the amount of transfer between the characters
+DepositTax | Number or percent. E.g. 4500 or 3% | -
+WithdrawalTax | Number or percent. E.g. 4732 or 5% | -
+ServiceTax | Number or percent. E.g. 125 or 0.5% | -
+MoneyTransferTax | Number or percent. E.g. 15021 or 2% | -
+
 ATM location
 --------------
 If you found ATM that not exists in the list - let me know.
 
 Changelog
 --------------
+v1.0.8
+- Added taxes feature: DepositTax, WithdrawalTax, ServiceTax and MoneyTransferTax.
+
 v1.0.7
 - Compatibility with .NET ScriptHook v1.0.
 
