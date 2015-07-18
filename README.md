@@ -7,6 +7,8 @@ This script lets you store ~~stolen~~ your money in bank account and earn intere
 
 Maximum balance: **2 147 483 647** for _each_ character.
 
+[GTA5Mods](https://www.gta5-mods.com/scripts/accountinbank)
+
 How to use
 ----------
 
