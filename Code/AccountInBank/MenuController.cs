@@ -157,7 +157,8 @@ namespace AccountInBank
 
         private void ATMBalanceActionMenuClick( ATMBalanceAction action )
         {
-            string valueS = Game.GetUserInput( "Enter value...", 9 );
+            this._script.View.CloseAllMenus();
+            string valueS = Game.GetUserInput( 9 );
             string status = "Success!";
             Color color = Color.LimeGreen;
             try
@@ -200,7 +201,7 @@ namespace AccountInBank
             var nextBtn = new MenuButton( "Next" );
             nextBtn.Activated += ( sender, args ) =>
             {
-                string valueS = Game.GetUserInput( "Enter value...", 9 );
+                string valueS = Game.GetUserInput( 9 );
                 var status = "Success!";
                 var color = Color.LimeGreen;
                 try
