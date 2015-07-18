@@ -57,6 +57,9 @@ If you found ATM that not exists in the list - let me know.
 
 Changelog
 --------------
+v1.0.9
+- Added ability to disable playback of animation.
+
 v1.0.8
 - Added taxes feature: DepositTax, WithdrawalTax, ServiceTax and MoneyTransferTax.
 
