@@ -46,6 +46,7 @@ namespace AccountInBank
             }
             this.ApplyMenuNavigationKeys();
             this._atmBlips = new List<Blip>();
+            MyAnimation_Bank.DisableAnimation = this._mySettings.DisableAnimation;
         }
 
         protected override void Dispose( bool A_0 )

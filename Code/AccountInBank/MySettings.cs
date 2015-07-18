@@ -18,6 +18,7 @@ namespace AccountInBank
         public bool LoseCashOnDeath { get; private set; }
         public bool LoseCashOnArrest { get; private set; }
         public bool ShowAllATMLocations { get; private set; }
+        public bool DisableAnimation { get; private set; }
 
         public Keys ActivateKey { get; private set; }
         public Keys BackKey { get; private set; }
@@ -50,6 +51,7 @@ namespace AccountInBank
             this.LoseCashOnDeath = this._settings.Read( "LoseCashOnDeath", "Settings", false );
             this.LoseCashOnArrest = this._settings.Read( "LoseCashOnArrest", "Settings", false );
             this.ShowAllATMLocations = this._settings.Read( "ShowAllATMLocations", "Settings", false );
+            this.DisableAnimation = this._settings.Read( "DisableAnimation", "Settings", false );
 
             this.ActivateKey = Helper.StringToKey( this._settings.Read( "ActivateKey", "MenuNavigation", "NumPad5" ),
                 Keys.NumPad5 );
