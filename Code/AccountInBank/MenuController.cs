@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading;
 using GTA;
+using NativeUI;
 
 #endregion
 
@@ -21,6 +22,7 @@ namespace AccountInBank
         private readonly Bank _bank;
         private readonly Script _script;
         private int _selectedChar;
+        private MenuPool _menuPool;
 
         public event EventHandler<EventArgs> MenuClosed;
 
@@ -28,6 +30,12 @@ namespace AccountInBank
         {
             this._bank = bank;
             this._script = script;
+            this._menuPool = new MenuPool();
+        }
+
+        public void Tick()
+        {
+            _menuPool.ProcessMenus();
         }
 
         #region Static
@@ -48,10 +56,12 @@ namespace AccountInBank
 
         #endregion
 
-        private void ShowMenu( Menu menu )
+        private void ShowMenu( UIMenu menu )
         {
-            this._script.View.AddMenu( menu );
-            this._script.View.MenuPosition = MenuPositioning( menu.Width, menu.ItemHeight );
+            //this._script.View.AddMenu( menu );
+            //this._script.View.MenuPosition = MenuPositioning( menu.Width, menu.ItemHeight );
+            this._menuPool.Add( menu );
+            menu.Visible = true;
         }
 
         /// <summary>
@@ -65,40 +75,41 @@ namespace AccountInBank
                 Thread.Sleep( delay );
                 this._script.View.CloseAllMenus();
                 this.ShowBankMenu();
-            } ) { Priority = ThreadPriority.Lowest };
+            } )
+            { Priority = ThreadPriority.Lowest };
             thread.Start();
         }
 
         private void ShowOperationStatusMenu( string status, bool autoClose = false, int autoCloseDelay = 2000,
             Color? headerColor = null, Color? unselectedColor = null, Color? selectedColor = null )
         {
-            var label = new MenuLabel( status );
-            var menu = new Menu( "Status", new IMenuItem[]
-            {
-                label
-            } )
-            {
-                HasFooter = false
-            };
-            SetDefaultColors( menu );
-            if ( headerColor.HasValue )
-            {
-                menu.HeaderColor = headerColor.Value;
-            }
-            if ( unselectedColor.HasValue )
-            {
-                menu.UnselectedItemColor = unselectedColor.Value;
-            }
-            if ( selectedColor.HasValue )
-            {
-                menu.SelectedItemColor = selectedColor.Value;
-            }
-            menu.Width += 10;
-            this.ShowMenu( menu );
-            if ( autoClose )
-            {
-                this.CloseAndShowMainMenu( autoCloseDelay );
-            }
+            //var label = new MenuLabel( status );
+            //var menu = new Menu( "Status", new IMenuItem[]
+            //{
+            //    label
+            //} )
+            //{
+            //    HasFooter = false
+            //};
+            //SetDefaultColors( menu );
+            //if ( headerColor.HasValue )
+            //{
+            //    menu.HeaderColor = headerColor.Value;
+            //}
+            //if ( unselectedColor.HasValue )
+            //{
+            //    menu.UnselectedItemColor = unselectedColor.Value;
+            //}
+            //if ( selectedColor.HasValue )
+            //{
+            //    menu.SelectedItemColor = selectedColor.Value;
+            //}
+            //menu.Width += 10;
+            //this.ShowMenu( menu );
+            //if ( autoClose )
+            //{
+            //    this.CloseAndShowMainMenu( autoCloseDelay );
+            //}
         }
 
         private void ShowOperationStatusMenu( string status, bool autoClose = false, int autoCloseDelay = 2000,
@@ -109,35 +120,35 @@ namespace AccountInBank
 
         public void ShowBankMenu()
         {
-            var showBalanceBnt = new MenuButton( "Show balance" );
+            var showBalanceBnt = new UIMenuItem( "Show balance" );
             showBalanceBnt.Activated += ( sender, args ) =>
             {
                 MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
                 this.ShowOperationStatusMenu( "Balance: $" + this._bank.Balance, true, 3000, null );
             };
 
-            var depositBtn = new MenuButton( "Deposit" );
+            var depositBtn = new UIMenuItem( "Deposit" );
             depositBtn.Activated += ( sender, args ) =>
             {
                 MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
                 this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit );
             };
 
-            var withdrawalBtn = new MenuButton( "Withdrawal" );
+            var withdrawalBtn = new UIMenuItem( "Withdrawal" );
             withdrawalBtn.Activated += ( sender, args ) =>
             {
                 MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
                 this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal );
             };
 
-            var moneyTransferBtn = new MenuButton( "Money transfer" );
+            var moneyTransferBtn = new UIMenuItem( "Money transfer" );
             moneyTransferBtn.Activated += ( sender, args ) =>
             {
                 MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
                 this.MoneyTransferActionMenuClick();
             };
 
-            var closeBtn = new MenuButton( "Close" );
+            var closeBtn = new UIMenuItem( "Close" );
             closeBtn.Activated += ( sender, args ) =>
             {
                 this._script.View.CloseAllMenus();
@@ -149,10 +160,65 @@ namespace AccountInBank
                 }
             };
 
-            var menu = new Menu( "ATM Menu",
-                new IMenuItem[] { showBalanceBnt, depositBtn, withdrawalBtn, moneyTransferBtn, closeBtn } );
-            SetDefaultColors( menu );
+            //var menu = new Menu( "ATM Menu",
+            //    new IMenuItem[] { showBalanceBnt, depositBtn, withdrawalBtn, moneyTransferBtn, closeBtn } );
+            //SetDefaultColors( menu );
+            //this.ShowMenu( menu );
+            var menu = new UIMenu( "Bank menu", "" );
+            menu.AddItem( showBalanceBnt );
+            menu.AddItem( depositBtn );
+            menu.AddItem( depositBtn );
+            menu.AddItem( withdrawalBtn );
+            menu.AddItem( moneyTransferBtn );
+            menu.AddItem( closeBtn );
+            menu.RefreshIndex();
             this.ShowMenu( menu );
+
+
+            //var showBalanceBnt = new MenuButton( "Show balance" );
+            //showBalanceBnt.Activated += ( sender, args ) =>
+            //{
+            //    MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+            //    this.ShowOperationStatusMenu( "Balance: $" + this._bank.Balance, true, 3000, null );
+            //};
+
+            //var depositBtn = new MenuButton( "Deposit" );
+            //depositBtn.Activated += ( sender, args ) =>
+            //{
+            //    MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+            //    this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit );
+            //};
+
+            //var withdrawalBtn = new MenuButton( "Withdrawal" );
+            //withdrawalBtn.Activated += ( sender, args ) =>
+            //{
+            //    MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+            //    this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal );
+            //};
+
+            //var moneyTransferBtn = new MenuButton( "Money transfer" );
+            //moneyTransferBtn.Activated += ( sender, args ) =>
+            //{
+            //    MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+            //    this.MoneyTransferActionMenuClick();
+            //};
+
+            //var closeBtn = new MenuButton( "Close" );
+            //closeBtn.Activated += ( sender, args ) =>
+            //{
+            //    this._script.View.CloseAllMenus();
+            //    // fire OnClose event
+            //    var onMenuClosed = this.MenuClosed;
+            //    if ( onMenuClosed != null )
+            //    {
+            //        onMenuClosed( this, new EventArgs() );
+            //    }
+            //};
+
+            //var menu = new Menu( "ATM Menu",
+            //    new IMenuItem[] { showBalanceBnt, depositBtn, withdrawalBtn, moneyTransferBtn, closeBtn } );
+            //SetDefaultColors( menu );
+            //this.ShowMenu( menu );
         }
 
         private void ATMBalanceActionMenuClick( ATMBalanceAction action )
@@ -187,40 +253,40 @@ namespace AccountInBank
 
         private void MoneyTransferActionMenuClick()
         {
-            this._script.View.CloseAllMenus();
-            int playerIndex = Helper.GetPlayerIndex();
-            PlayerModel[] availableCharacters =
-                Enum.GetValues( typeof( PlayerModel ) )
-                    .Cast<PlayerModel>()
-                    .Where( p => (int)p != playerIndex && p != PlayerModel.None )
-                    .ToArray();
-            var charactedEnumScroller = new MenuEnumScroller( "Character", "",
-                Array.ConvertAll( availableCharacters, p => p.ToString() ) );
-            charactedEnumScroller.Changed += ( sender, args ) => this._selectedChar = charactedEnumScroller.Index;
+            //this._script.View.CloseAllMenus();
+            //int playerIndex = Helper.GetPlayerIndex();
+            //PlayerModel[] availableCharacters =
+            //    Enum.GetValues( typeof( PlayerModel ) )
+            //        .Cast<PlayerModel>()
+            //        .Where( p => (int)p != playerIndex && p != PlayerModel.None )
+            //        .ToArray();
+            //var charactedEnumScroller = new MenuEnumScroller( "Character", "",
+            //    Array.ConvertAll( availableCharacters, p => p.ToString() ) );
+            //charactedEnumScroller.Changed += ( sender, args ) => this._selectedChar = charactedEnumScroller.Index;
 
-            var nextBtn = new MenuButton( "Next" );
-            nextBtn.Activated += ( sender, args ) =>
-            {
-                string valueS = Game.GetUserInput( 9 );
-                var status = "Success!";
-                var color = Color.LimeGreen;
-                try
-                {
-                    int target = ( (int)availableCharacters[ this._selectedChar ] );
-                    this._bank.TransferMoney( target, valueS );
-                }
-                catch ( Exception exception )
-                {
-                    color = Color.Red;
-                    status = exception.Message;
-                }
-                this.ShowOperationStatusMenu( status, true, 2000, color );
-            };
+            //var nextBtn = new MenuButton( "Next" );
+            //nextBtn.Activated += ( sender, args ) =>
+            //{
+            //    string valueS = Game.GetUserInput( 9 );
+            //    var status = "Success!";
+            //    var color = Color.LimeGreen;
+            //    try
+            //    {
+            //        int target = ( (int)availableCharacters[ this._selectedChar ] );
+            //        this._bank.TransferMoney( target, valueS );
+            //    }
+            //    catch ( Exception exception )
+            //    {
+            //        color = Color.Red;
+            //        status = exception.Message;
+            //    }
+            //    this.ShowOperationStatusMenu( status, true, 2000, color );
+            //};
 
-            var menu = new Menu( "Money transfer", new IMenuItem[] { charactedEnumScroller, nextBtn } );
-            menu.Width += 25;
-            SetDefaultColors( menu );
-            this.ShowMenu( menu );
+            //var menu = new Menu( "Money transfer", new IMenuItem[] { charactedEnumScroller, nextBtn } );
+            //menu.Width += 25;
+            //SetDefaultColors( menu );
+            //this.ShowMenu( menu );
         }
     }
 }
