@@ -44,7 +44,6 @@ namespace AccountInBank
             {
                 this.PrintAllBlips();
             }
-            this.ApplyMenuNavigationKeys();
             this._atmBlips = new List<Blip>();
         }
 
@@ -66,16 +65,6 @@ namespace AccountInBank
                     }
                 }
             }
-        }
-
-        private void ApplyMenuNavigationKeys()
-        {
-            this.ActivateKey = this._mySettings.ActivateKey;
-            this.BackKey = this._mySettings.BackKey;
-            this.LeftKey = this._mySettings.LeftKey;
-            this.RightKey = this._mySettings.RightKey;
-            this.UpKey = this._mySettings.UpKey;
-            this.DownKey = this._mySettings.DownKey;
         }
 
         private void PrintAllBlips()
