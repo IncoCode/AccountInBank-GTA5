@@ -162,13 +162,7 @@ namespace AccountInBank
             var closeBtn = new UIMenuItem( "Close" );
             closeBtn.Activated += ( sender, args ) =>
             {
-                this._script.View.CloseAllMenus();
-                // fire OnClose event
-                var onMenuClosed = this.MenuClosed;
-                if ( onMenuClosed != null )
-                {
-                    onMenuClosed( this, new EventArgs() );
-                }
+                closeBtn.Parent.GoBack();
             };
 
             var menu = new UIMenu( "Bank menu", "" );
@@ -177,9 +171,16 @@ namespace AccountInBank
             menu.AddItem( withdrawalBtn );
             menu.AddItem( moneyTransferBtn );
             menu.AddItem( closeBtn );
+            menu.OnMenuClose += sender =>
+            {
+                // fire OnClose event
+                var onMenuClosed = this.MenuClosed;
+                if ( onMenuClosed != null )
+                {
+                    onMenuClosed( this, new EventArgs() );
+                }
+            };
             this.ShowMenu( menu );
-            //this.ShowOperationStatusMenu( "Balance: $" + this._bank.Balance, true, 3000 );
-
         }
 
         private void ATMBalanceActionMenuClick( ATMBalanceAction action )
