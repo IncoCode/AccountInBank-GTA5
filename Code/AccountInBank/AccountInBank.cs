@@ -46,7 +46,6 @@ namespace AccountInBank
             }
             this.ApplyMenuNavigationKeys();
             this._atmBlips = new List<Blip>();
-            MyAnimation_Bank.DisableAnimation = this._mySettings.DisableAnimation;
         }
 
         protected override void Dispose( bool A_0 )
@@ -89,8 +88,6 @@ namespace AccountInBank
         private void _menuController_MenuClosed( object sender, EventArgs e )
         {
             this.Interval = 1000;
-            MyAnimation_Bank.PlayExitAnimation();
-            Wait( 6500 );
             Game.Player.CanControlCharacter = true;
         }
 
@@ -177,9 +174,6 @@ namespace AccountInBank
                 }
                 while ( Math.Abs( Game.Player.Character.Velocity.X ) + Math.Abs( Game.Player.Character.Velocity.Y ) >
                         0 || (int)Game.Player.Character.Heading != (int)nearATM.Heading );
-                MyAnimation_Bank.PlayEnterAnimation();
-                Wait( 6500 );
-                MyAnimation_Bank.PlayIdleAnimation();
                 this.Interval = 0;
                 this._menuController.ShowBankMenu();
             }

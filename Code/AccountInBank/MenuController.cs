@@ -45,18 +45,11 @@ namespace AccountInBank
             showBalanceBnt.Activated += ( sender, args ) => { UI.Notify( "Balance: $" + this._bank.Balance, true ); };
 
             var depositBtn = new UIMenuItem( "Deposit" );
-            depositBtn.Activated += ( sender, args ) =>
-            {
-                MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
-                this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit );
-            };
+            depositBtn.Activated += ( sender, args ) => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit ); };
 
             var withdrawalBtn = new UIMenuItem( "Withdrawal" );
-            withdrawalBtn.Activated += ( sender, args ) =>
-            {
-                MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
-                this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal );
-            };
+            withdrawalBtn.Activated +=
+                ( sender, args ) => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal ); };
 
             var moneyTransferBtn = new UIMenuItem( "Money transfer" );
             var moneyTransferMenu = this.GetMoneyTransferMenu();
