@@ -59,6 +59,10 @@ If you found ATM that not exists in the list - let me know.
 
 Changelog
 --------------
+v1.1.0
+- Use NativeUI Library for menu;
+- Added new ATMs.
+
 v1.0.9
 - Added ability to disable playback of animation.
 
