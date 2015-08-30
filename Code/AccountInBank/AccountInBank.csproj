@@ -54,6 +54,10 @@
     <Reference Include="IniFile">
       <HintPath>..\packages\IniFile.dll</HintPath>
     </Reference>
+    <Reference Include="NativeUI">
+      <HintPath>..\packages\NativeUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="ScriptHookVDotNet, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ScriptHookVDotNet.dll</HintPath>
