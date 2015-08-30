@@ -24,6 +24,7 @@ namespace AccountInBank
         private int _selectedChar;
         private MenuPool _menuPool;
         private Notification _lastNotification;
+        private UIMenu _mainMenu;
 
         public event EventHandler<EventArgs> MenuClosed;
 
@@ -32,6 +33,7 @@ namespace AccountInBank
             this._bank = bank;
             this._script = script;
             this._menuPool = new MenuPool();
+            this.CreateMenus();
         }
 
         public void Tick()
@@ -66,6 +68,72 @@ namespace AccountInBank
             this._menuPool.Add( menu );
             menu.Visible = true;
         }
+
+        #region Create Menus
+
+        private void CreateMainMenu()
+        {
+            var showBalanceBnt = new UIMenuItem( "Show balance" );
+            showBalanceBnt.Activated += ( sender, args ) =>
+            {
+                UI.Notify( "Balance: $" + this._bank.Balance, true );
+            };
+
+            var depositBtn = new UIMenuItem( "Deposit" );
+            depositBtn.Activated += ( sender, args ) =>
+            {
+                MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+                this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit );
+            };
+
+            var withdrawalBtn = new UIMenuItem( "Withdrawal" );
+            withdrawalBtn.Activated += ( sender, args ) =>
+            {
+                MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+                this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal );
+            };
+
+            var moneyTransferBtn = new UIMenuItem( "Money transfer" );
+            moneyTransferBtn.Activated += ( sender, args ) =>
+            {
+                MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+                this.MoneyTransferActionMenuClick();
+            };
+
+            var menu = new UIMenu( "Bank menu", "" );
+            menu.AddItem( showBalanceBnt );
+            menu.AddItem( depositBtn );
+            menu.AddItem( withdrawalBtn );
+            menu.AddItem( moneyTransferBtn );
+            menu.OnMenuClose += sender =>
+            {
+                // fire OnClose event
+                var onMenuClosed = this.MenuClosed;
+                if ( onMenuClosed != null )
+                {
+                    onMenuClosed( this, new EventArgs() );
+                }
+            };
+            menu.RefreshIndex();
+            menu.Visible = false;
+
+            this._mainMenu = menu;
+            this._menuPool.Add( this._mainMenu );
+        }
+
+        private void CreateWithdrawalMenu()
+        {
+
+        }
+
+        private void CreateMenus()
+        {
+            this.CreateMainMenu();
+            this.CreateWithdrawalMenu();
+        }
+
+        #endregion
+
 
         /// <summary>
         /// Closes all menu and displays main bank menu
@@ -132,55 +200,7 @@ namespace AccountInBank
 
         public void ShowBankMenu()
         {
-            var showBalanceBnt = new UIMenuItem( "Show balance" );
-            showBalanceBnt.Activated += ( sender, args ) =>
-            {
-                UI.Notify( "Balance: $" + this._bank.Balance, true );
-            };
-
-            var depositBtn = new UIMenuItem( "Deposit" );
-            depositBtn.Activated += ( sender, args ) =>
-            {
-                MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
-                this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit );
-            };
-
-            var withdrawalBtn = new UIMenuItem( "Withdrawal" );
-            withdrawalBtn.Activated += ( sender, args ) =>
-            {
-                MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
-                this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal );
-            };
-
-            var moneyTransferBtn = new UIMenuItem( "Money transfer" );
-            moneyTransferBtn.Activated += ( sender, args ) =>
-            {
-                MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
-                this.MoneyTransferActionMenuClick();
-            };
-
-            var closeBtn = new UIMenuItem( "Close" );
-            closeBtn.Activated += ( sender, args ) =>
-            {
-                closeBtn.Parent.GoBack();
-            };
-
-            var menu = new UIMenu( "Bank menu", "" );
-            menu.AddItem( showBalanceBnt );
-            menu.AddItem( depositBtn );
-            menu.AddItem( withdrawalBtn );
-            menu.AddItem( moneyTransferBtn );
-            menu.AddItem( closeBtn );
-            menu.OnMenuClose += sender =>
-            {
-                // fire OnClose event
-                var onMenuClosed = this.MenuClosed;
-                if ( onMenuClosed != null )
-                {
-                    onMenuClosed( this, new EventArgs() );
-                }
-            };
-            this.ShowMenu( menu );
+            this._mainMenu.Visible = true;
         }
 
         private void ATMBalanceActionMenuClick( ATMBalanceAction action )
