@@ -1,6 +1,7 @@
 ﻿#region Using
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -94,12 +95,13 @@ namespace AccountInBank
             };
 
             var moneyTransferBtn = new UIMenuItem( "Money transfer" );
-            moneyTransferBtn.Activated += ( sender, args ) =>
-            {
-                MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
-                this.MoneyTransferActionMenuClick();
-            };
+            //moneyTransferBtn.Activated += ( sender, args ) =>
+            //{
+            //    MyAnimation_Bank.PlayChooseAnimationWaitPlayIdle();
+            //    this.MoneyTransferActionMenuClick();
+            //};
 
+            var moneyTransferMenu = this.GetMoneyTransferMenu();
             var menu = new UIMenu( "Bank menu", "" );
             menu.AddItem( showBalanceBnt );
             menu.AddItem( depositBtn );
@@ -114,22 +116,52 @@ namespace AccountInBank
                     onMenuClosed( this, new EventArgs() );
                 }
             };
+            menu.BindMenuToItem( moneyTransferMenu, moneyTransferBtn );
             menu.RefreshIndex();
             menu.Visible = false;
 
             this._mainMenu = menu;
             this._menuPool.Add( this._mainMenu );
+            this._menuPool.Add( moneyTransferMenu );
         }
 
-        private void CreateWithdrawalMenu()
+        private UIMenu GetMoneyTransferMenu()
         {
-
+            int playerIndex = Helper.GetPlayerIndex();
+            PlayerModel[] availableCharacters =
+                Enum.GetValues( typeof( PlayerModel ) )
+                    .Cast<PlayerModel>()
+                    .Where( p => (int)p != playerIndex && p != PlayerModel.None )
+                    .ToArray();
+            var menu = new UIMenu( "Money Transfer", "" );
+            var availableCharactersList = new UIMenuListItem( "Character", availableCharacters.Cast<dynamic>().ToList(),
+                0 );
+            menu.AddItem( availableCharactersList );
+            UIMenuItem nextBtn = new UIMenuItem( "Next" );
+            menu.AddItem( nextBtn );
+            nextBtn.Activated += ( sender, item ) =>
+            {
+                string valueS = Game.GetUserInput( 9 );
+                string status = "Operation \"Withdrawal\": ~g~Success!";
+                try
+                {
+                    int target = ( (int)availableCharacters[ availableCharactersList.Index ] );
+                    this._bank.TransferMoney( target, valueS );
+                }
+                catch ( Exception exception )
+                {
+                    status = $"Operation \"Withdrawal\": ~r~Failed!~n~Error: {exception.Message}";
+                }
+                UI.Notify( status );
+                menu.GoBack();
+            };
+            return menu;
         }
 
         private void CreateMenus()
         {
             this.CreateMainMenu();
-            this.CreateWithdrawalMenu();
+            this.GetMoneyTransferMenu();
         }
 
         #endregion
