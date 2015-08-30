@@ -67,7 +67,11 @@ namespace AccountInBank
                 new ATM( new Vector3( -97.23336f, 6455.469f, 31.46682f ), 49.50279f, false ),
                 new ATM( new Vector3( -386.7451f, 6046.102f, 31.50172f ), 315.2239f, false ),
                 new ATM( new Vector3( -1091.42f, 2708.629f, 18.95568f ), 46.68598f, false ),
-                new ATM( new Vector3( 5.132f, -919.7711f, 29.55953f ), 250.4304f, false )
+                new ATM( new Vector3( 5.132f, -919.7711f, 29.55953f ), 250.4304f, false ),
+                new ATM( new Vector3( -660.703f, -853.971f, 24.484f ), 180.1663f, false ),
+                new ATM( new Vector3( -2293.827f, 354.817f, 174.602f ), 115.5668f, false ),
+                new ATM( new Vector3( -2294.637f, 356.553f, 174.602f ), 113.6837f, false ),
+                new ATM( new Vector3( -2295.377f, 358.241f, 174.648f ), 110.682f, false )
             };
 
             return list.ToArray();
