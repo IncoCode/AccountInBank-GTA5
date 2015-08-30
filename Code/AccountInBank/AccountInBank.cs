@@ -21,7 +21,7 @@ namespace AccountInBank
         private readonly IniFile _settings;
         private readonly MySettings _mySettings;
         private readonly CharacterStat[] _charactersStats;
-        private List<Blip> _atmBlips;
+        private readonly List<Blip> _atmBlips;
 
         public AccountInBank()
         {

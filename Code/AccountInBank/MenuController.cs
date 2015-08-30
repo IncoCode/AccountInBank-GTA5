@@ -1,7 +1,6 @@
 ﻿#region Using
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using GTA;
 using NativeUI;
@@ -35,7 +34,7 @@ namespace AccountInBank
 
         public void Tick()
         {
-            _menuPool.ProcessMenus();
+            this._menuPool.ProcessMenus();
         }
 
         #region Create Menus
@@ -43,10 +42,7 @@ namespace AccountInBank
         private void CreateMainMenu()
         {
             var showBalanceBnt = new UIMenuItem( "Show balance" );
-            showBalanceBnt.Activated += ( sender, args ) =>
-            {
-                UI.Notify( "Balance: $" + this._bank.Balance, true );
-            };
+            showBalanceBnt.Activated += ( sender, args ) => { UI.Notify( "Balance: $" + this._bank.Balance, true ); };
 
             var depositBtn = new UIMenuItem( "Deposit" );
             depositBtn.Activated += ( sender, args ) =>
@@ -74,10 +70,7 @@ namespace AccountInBank
             {
                 // fire OnClose event
                 var onMenuClosed = this.MenuClosed;
-                if ( onMenuClosed != null )
-                {
-                    onMenuClosed( this, new EventArgs() );
-                }
+                onMenuClosed?.Invoke( this, new EventArgs() );
             };
             menu.BindMenuToItem( moneyTransferMenu, moneyTransferBtn );
             menu.RefreshIndex();
