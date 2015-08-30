@@ -52,6 +52,7 @@ namespace AccountInBank
         {
             if ( A_0 )
             {
+                Game.Player.CanControlCharacter = true;
                 if ( this._nearestATM != null )
                 {
                     this._nearestATM.Dispose();
