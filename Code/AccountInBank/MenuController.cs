@@ -167,7 +167,6 @@ namespace AccountInBank
             var menu = new UIMenu( "Bank menu", "" );
             menu.AddItem( showBalanceBnt );
             menu.AddItem( depositBtn );
-            menu.AddItem( depositBtn );
             menu.AddItem( withdrawalBtn );
             menu.AddItem( moneyTransferBtn );
             menu.AddItem( closeBtn );

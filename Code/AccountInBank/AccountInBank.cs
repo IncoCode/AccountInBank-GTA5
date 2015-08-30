@@ -97,6 +97,7 @@ namespace AccountInBank
         private void AccountInBank_Tick( object sender, EventArgs e )
         {
             this._bank.AccrueInterest();
+            this._menuController.Tick();
 
             int playerId = Helper.GetPlayerIndex() - 1;
             CharacterStat charStats = this._charactersStats[ playerId ];
@@ -179,8 +180,8 @@ namespace AccountInBank
                 MyAnimation_Bank.PlayEnterAnimation();
                 Wait( 6500 );
                 MyAnimation_Bank.PlayIdleAnimation();
-                this._menuController.ShowBankMenu();
                 this.Interval = 0;
+                this._menuController.ShowBankMenu();
             }
         }
     }
