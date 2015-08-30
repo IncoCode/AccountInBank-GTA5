@@ -21,7 +21,8 @@ Requirements
 - Microsoft [.NET Framework 4.5](https://www.microsoft.com/download/details.aspx?id=30653);
 - Microsoft [Visual C++ Redistributable Package for Visual Studio 2013 (x64)](https://www.microsoft.com/download/details.aspx?id=40784);
 - [Script Hook V](http://gtaforums.com/topic/788343-script-hook-v/);
-- [Community Script Hook V .NET v1.1](https://github.com/crosire/scripthookvdotnet/releases/tag/v1.1).
+- [Community Script Hook V .NET v1.1](https://github.com/crosire/scripthookvdotnet/releases/tag/v1.1);
+- [NativeUI Library](http://gtaforums.com/topic/809284-net-nativeui/).
 
 How to install
 --------------
@@ -43,7 +44,6 @@ OpenATMMenuKey | [Look here](https://msdn.microsoft.com/en-us/library/system.win
 LoseCashOnDeath | True / False | Lose all cash when you die
 LoseCashOnArrest | True / False | Lose all cash when you get arrested
 ShowAllATMLocations | True / False | Show all ATM locations on the map
-DisableAnimation | True / False | Disable playback of animation
 EnableDepositTax | True / False | Enables tax on new deposits
 EnableWithdrawalTax | True / False | Enables tax on withdrawals
 EnableServiceTax | True / False | Enables service tax (debited every day)
