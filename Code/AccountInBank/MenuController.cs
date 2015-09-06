@@ -121,7 +121,6 @@ namespace AccountInBank
 
         private void ATMBalanceActionMenuClick( ATMBalanceAction action )
         {
-            this._script.View.CloseAllMenus();
             string valueS = Game.GetUserInput( 9 );
             string status = $"Operation \"{action}\": ~g~Success!";
             try
