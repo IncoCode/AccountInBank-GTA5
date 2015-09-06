@@ -152,7 +152,7 @@ namespace AccountInBank
                     this._nearestATM = null;
                 }
                 Game.Player.CanControlCharacter = false;
-                Game.Player.Character.Task.SlideToCoord( nearATM.Position, nearATM.Heading );
+                Game.Player.Character.Task.SlideTo( nearATM.Position, nearATM.Heading );
                 DateTime endTime = DateTime.Now + new TimeSpan( 0, 0, 0, 0, 4500 );
                 do
                 {
