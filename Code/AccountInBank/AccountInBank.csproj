@@ -87,7 +87,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(ProjectDir)$(OutDir)*.dll" "d:\GAMES\Steam\Steam\SteamApps\common\Grand Theft Auto V\scripts\"
+    <PostBuildEvent>xcopy "$(ProjectDir)$(OutDir)*.dll" "d:\GAMES\Steam\Steam\SteamApps\common\Grand Theft Auto V\scripts\" /C
 xcopy "$(ProjectDir)$(OutDir)*.pdb" "d:\GAMES\Steam\Steam\SteamApps\common\Grand Theft Auto V\scripts\" /C</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
