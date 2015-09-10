@@ -88,8 +88,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)$(OutDir)*.dll" "d:\GAMES\Steam\Steam\SteamApps\common\Grand Theft Auto V\scripts\" /C
-xcopy "$(ProjectDir)$(OutDir)*.pdb" "d:\GAMES\Steam\Steam\SteamApps\common\Grand Theft Auto V\scripts\" /C</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(ProjectDir)$(OutDir)*.dll" "d:\GAMES\Steam\Steam\SteamApps\common\Grand Theft Auto V\scripts\" /CY
+xcopy "$(ProjectDir)$(OutDir)*.pdb" "d:\GAMES\Steam\Steam\SteamApps\common\Grand Theft Auto V\scripts\" /CY</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
