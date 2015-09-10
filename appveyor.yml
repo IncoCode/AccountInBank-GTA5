@@ -33,6 +33,7 @@ deploy:
 - provider: GitHub
   tag: $(appveyor_build_version)
   release: AccountInBank v$(appveyor_build_version)
+  description: ''
   auth_token:
     secure: 2dMAnOvtqddZVDVbyP4inFMDgFPCz+1AEFJZsZ+2t/5wUGfrfRVSbGJNHA8boTvV
   artifact: AccountInBank
