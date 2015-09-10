@@ -1,4 +1,4 @@
-version: 1.1.1 Build {build}
+version: 1.1.2 Build {build}
 os: Visual Studio 2015
 configuration: Release
 platform: x64
@@ -20,7 +20,6 @@ before_build:
 build:
   project: Code\AccountInBank\AccountInBank.csproj
   verbosity: minimal
-test: off
 artifacts:
 - path: Code\AccountInBank\bin\Release\
   name: AccountInBank
