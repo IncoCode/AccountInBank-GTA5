@@ -9,8 +9,8 @@ before_build:
     $destination_file =  $original_file
 
     (Get-Content $original_file) | Foreach-Object {
-        $_ -replace '<PostBuildEvent>xcopy \"\$\(ProjectDir\)\$\(OutDir\)\*.dll\" \"d:\\GAMES\\Steam\\Steam\\SteamApps\\common\\Grand Theft Auto V\\scripts\\\" /C', '' `
-           -replace 'xcopy \"\$\(ProjectDir\)\$\(OutDir\)\*.pdb\" \"d:\\GAMES\\Steam\\Steam\\SteamApps\\common\\Grand Theft Auto V\\scripts\\\" /C</PostBuildEvent>', '' `
+        $_ -replace '<PostBuildEvent>xcopy \"\$\(ProjectDir\)\$\(OutDir\)\*.dll\" \"d:\\GAMES\\Steam\\Steam\\SteamApps\\common\\Grand Theft Auto V\\scripts\\\" /CY', '' `
+           -replace 'xcopy \"\$\(ProjectDir\)\$\(OutDir\)\*.pdb\" \"d:\\GAMES\\Steam\\Steam\\SteamApps\\common\\Grand Theft Auto V\\scripts\\\" /CY</PostBuildEvent>', '' `
         } | Set-Content $destination_file
     New-Item -ItemType File -Path Code\\AccountInBank\\bin\\\Release\\README.txt -Force
 
