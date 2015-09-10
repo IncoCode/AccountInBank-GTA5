@@ -18,16 +18,16 @@ namespace AccountInBank
     internal class MenuController
     {
         private readonly Bank _bank;
-        private readonly Script _script;
         private readonly MenuPool _menuPool;
+        private readonly MySettings _mySettings;
         private UIMenu _mainMenu;
 
         public event EventHandler<EventArgs> MenuClosed;
 
-        public MenuController( Bank bank, Script script )
+        public MenuController( Bank bank, MySettings settings )
         {
             this._bank = bank;
-            this._script = script;
+            this._mySettings = settings;
             this._menuPool = new MenuPool();
             this.CreateMenus();
         }
@@ -42,14 +42,34 @@ namespace AccountInBank
         private void CreateMainMenu()
         {
             var showBalanceBnt = new UIMenuItem( "Show balance" );
-            showBalanceBnt.Activated += ( sender, args ) => { UI.Notify( "Balance: $" + this._bank.Balance, true ); };
+            showBalanceBnt.Activated += ( sender, args ) =>
+            {
+                if ( this._mySettings.EnableAnimation )
+                {
+                    AccountInBankAnimation.PlayChooseAnimationWaitPlayIdle();
+                }
+                UI.Notify( "Balance: $" + this._bank.Balance, true );
+            };
 
             var depositBtn = new UIMenuItem( "Deposit" );
-            depositBtn.Activated += ( sender, args ) => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit ); };
+            depositBtn.Activated += ( sender, args ) =>
+            {
+                if ( this._mySettings.EnableAnimation )
+                {
+                    AccountInBankAnimation.PlayChooseAnimationWaitPlayIdle();
+                }
+                this.ATMBalanceActionMenuClick( ATMBalanceAction.Deposit );
+            };
 
             var withdrawalBtn = new UIMenuItem( "Withdrawal" );
-            withdrawalBtn.Activated +=
-                ( sender, args ) => { this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal ); };
+            withdrawalBtn.Activated += ( sender, args ) =>
+            {
+                if ( this._mySettings.EnableAnimation )
+                {
+                    AccountInBankAnimation.PlayChooseAnimationWaitPlayIdle();
+                }
+                this.ATMBalanceActionMenuClick( ATMBalanceAction.Withdrawal );
+            };
 
             var moneyTransferBtn = new UIMenuItem( "Money transfer" );
             var moneyTransferMenu = this.GetMoneyTransferMenu();

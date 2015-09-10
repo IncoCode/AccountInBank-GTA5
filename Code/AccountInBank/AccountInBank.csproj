@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="AccountInBank.cs" />
     <Compile Include="Bank.cs" />
+    <Compile Include="AccountInBankAnimation.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="MenuController.cs" />
     <Compile Include="Model\ATM.cs" />
