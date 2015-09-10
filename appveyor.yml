@@ -6,20 +6,26 @@ before_build:
 - ps: >-
     $original_file = 'Code\\AccountInBank\\AccountInBank.csproj'
 
+
     $destination_file =  $original_file
 
+
     (Get-Content $original_file) | Foreach-Object {
-        $_ -replace '<PostBuildEvent>xcopy \"\$\(ProjectDir\)\$\(OutDir\)\*.dll\" \"d:\\GAMES\\Steam\\Steam\\SteamApps\\common\\Grand Theft Auto V\\scripts\\\" /CY', '' `
-           -replace 'xcopy \"\$\(ProjectDir\)\$\(OutDir\)\*.pdb\" \"d:\\GAMES\\Steam\\Steam\\SteamApps\\common\\Grand Theft Auto V\\scripts\\\" /CY</PostBuildEvent>', '' `
-        } | Set-Content $destination_file
+    	$_ -replace '<PostBuildEvent>xcopy \"\$\(ProjectDir\)\$\(OutDir\)\*.dll\" \"d:\\GAMES\\Steam\\Steam\\SteamApps\\common\\Grand Theft Auto V\\scripts\\\" /CY', '' `
+    	   -replace 'xcopy \"\$\(ProjectDir\)\$\(OutDir\)\*.pdb\" \"d:\\GAMES\\Steam\\Steam\\SteamApps\\common\\Grand Theft Auto V\\scripts\\\" /CY</PostBuildEvent>', '' `
+    	} | Set-Content $destination_file
     New-Item -ItemType File -Path Code\\AccountInBank\\bin\\\Release\\README.txt -Force
+
 
     Copy-Item README.md Code\\AccountInBank\\bin\\\Release\\README.txt -Recurse
 
+
     Copy-Item AccountInBankS.ini Code\\AccountInBank\\bin\\\Release\\AccountInBankS.ini -Recurse
 build:
-  project: Code\AccountInBank\AccountInBank.csproj
+  project: Code\AccountInBank.sln
   verbosity: minimal
+test_script:
+- ps: vstest.console /logger:Appveyor "C:\projects\accountinbank-gta5\Code\Tests\bin\Release\Tests.dll" /Platform:x64
 artifacts:
 - path: Code\AccountInBank\bin\Release\
   name: AccountInBank
@@ -27,7 +33,6 @@ deploy:
 - provider: GitHub
   tag: $(appveyor_build_version)
   release: AccountInBank v$(appveyor_build_version)
-  description: ''
   auth_token:
     secure: 2dMAnOvtqddZVDVbyP4inFMDgFPCz+1AEFJZsZ+2t/5wUGfrfRVSbGJNHA8boTvV
   artifact: AccountInBank
