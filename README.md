@@ -44,7 +44,7 @@ OpenATMMenuKey | [Look here](https://msdn.microsoft.com/en-us/library/system.win
 LoseCashOnDeath | True / False | Lose all cash when you die
 LoseCashOnArrest | True / False | Lose all cash when you get arrested
 ShowAllATMLocations | True / False | Show all ATM locations on the map
-DisableAnimation | True / False | Disable playback of animation
+EnableAnimation | True / False | Enable playback of animation
 EnableDepositTax | True / False | Enables tax on new deposits
 EnableWithdrawalTax | True / False | Enables tax on withdrawals
 EnableServiceTax | True / False | Enables service tax (debited every day)
