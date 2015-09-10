@@ -59,6 +59,9 @@ If you found ATM that not exists in the list - let me know.
 
 Changelog
 --------------
+v1.1.2
+- Add animation (disabled by default).
+
 v1.1.1
 - Compatibility with .NET ScriptHook v2.0.
 
