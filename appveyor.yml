@@ -1,4 +1,4 @@
-version: 1.1.2 Build {build}
+version: 1.1.3 Build {build}
 os: Visual Studio 2015
 configuration: Release
 platform: x64
@@ -11,7 +11,7 @@ before_build:
 
 
     (Get-Content $original_file) | Foreach-Object {
-    	$_ -replace '<PostBuildEvent>xcopy \"\$\(ProjectDir\)\$\(OutDir\)\*.dll\" \"d:\\GAMES\\Steam\\Steam\\SteamApps\\common\\Grand Theft Auto V\\scripts\\\" /CY', '' `
+    	$_ -replace '<PostBuildEvent>xcopy \"\$\(ProjectDir\)\$\(OutDir\)\$\(TargetFileName\)\" \"d:\\GAMES\\Steam\\Steam\\SteamApps\\common\\Grand Theft Auto V\\scripts\\\" /CY', '' `
     	   -replace 'xcopy \"\$\(ProjectDir\)\$\(OutDir\)\*.pdb\" \"d:\\GAMES\\Steam\\Steam\\SteamApps\\common\\Grand Theft Auto V\\scripts\\\" /CY</PostBuildEvent>', '' `
     	} | Set-Content $destination_file
     New-Item -ItemType File -Path Code\\AccountInBank\\bin\\\Release\\README.txt -Force
@@ -21,6 +21,9 @@ before_build:
 
 
     Copy-Item AccountInBankS.ini Code\\AccountInBank\\bin\\\Release\\AccountInBankS.ini -Recurse
+
+
+    nuget restore Code\\AccountInBank.sln -verbosity detailed
 build:
   project: Code\AccountInBank.sln
   verbosity: minimal
