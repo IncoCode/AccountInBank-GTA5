@@ -27,6 +27,8 @@ before_build:
 build:
   project: Code\AccountInBank.sln
   verbosity: minimal
+after_build:
+- ps: Remove-Item Code\\AccountInBank\\bin\\\Release\\IniFile.dll
 test_script:
 - ps: vstest.console /logger:Appveyor "C:\projects\accountinbank-gta5\Code\Tests\bin\Release\Tests.dll" /Platform:x64
 artifacts:
