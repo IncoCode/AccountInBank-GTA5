@@ -40,11 +40,11 @@ namespace AccountInBank
 
             this._charactersStats = new CharacterStat[ 3 ];
             this.LoadCharactersStats();
+            this._atmBlips = new List<Blip>();
             if ( this._mySettings.ShowAllATMLocations )
             {
                 this.PrintAllBlips();
             }
-            this._atmBlips = new List<Blip>();
         }
 
         protected override void Dispose( bool A_0 )
