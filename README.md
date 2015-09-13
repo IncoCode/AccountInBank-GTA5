@@ -60,6 +60,10 @@ If you found ATM that not exists in the list - let me know.
 
 Changelog
 --------------
+v1.1.3
+- Fixed bug with ShowAllATMLocations feature;
+- All dependencies are embedded in main dll.
+
 v1.1.2
 - Add animation (disabled by default).
 
