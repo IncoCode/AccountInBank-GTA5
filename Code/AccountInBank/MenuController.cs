@@ -29,7 +29,6 @@ namespace AccountInBank
             this._bank = bank;
             this._mySettings = settings;
             this._menuPool = new MenuPool();
-            this.CreateMenus();
         }
 
         public void Tick()
@@ -136,6 +135,7 @@ namespace AccountInBank
 
         public void ShowBankMenu()
         {
+            this.CreateMainMenu();
             this._mainMenu.Visible = true;
         }
 
