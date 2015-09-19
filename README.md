@@ -60,6 +60,9 @@ If you found ATM that not exists in the list - let me know.
 
 Changelog
 --------------
+v1.1.4
+- Fixed bug when available characters list doesn't get updated.
+
 v1.1.3
 - Fixed bug with ShowAllATMLocations feature;
 - All dependencies are embedded in main dll.
