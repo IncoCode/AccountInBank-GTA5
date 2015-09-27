@@ -18,10 +18,10 @@ How to use
 Requirements 
 --------------
 
-- Microsoft [.NET Framework 4.5](https://www.microsoft.com/download/details.aspx?id=30653);
+- Microsoft [.NET Framework ≥ 4.5.2](https://www.microsoft.com/download/details.aspx?id=30653);
 - Microsoft [Visual C++ Redistributable Package for Visual Studio 2013 (x64)](https://www.microsoft.com/download/details.aspx?id=40784);
 - [Script Hook V](http://gtaforums.com/topic/788343-script-hook-v/);
-- [Community Script Hook V .NET v2.1](https://github.com/crosire/scripthookvdotnet/releases/tag/v2.1);
+- [Community Script Hook V .NET ≥ v2.1](https://github.com/crosire/scripthookvdotnet/releases/tag/v2.1);
 - [NativeUI Library](http://gtaforums.com/topic/809284-net-nativeui/).
 
 How to install
@@ -60,6 +60,9 @@ If you found ATM that not exists in the list - let me know.
 
 Changelog
 --------------
+v1.1.5
+- Update IniFile.dll to the latest version.
+
 v1.1.4
 - Fixed bug when available characters list doesn't get updated.
 
