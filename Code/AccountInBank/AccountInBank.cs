@@ -47,23 +47,21 @@ namespace AccountInBank
             }
         }
 
-        protected override void Dispose( bool A_0 )
+        protected override void Dispose( bool disposing )
         {
-            if ( A_0 )
+            if ( !disposing )
             {
-                Game.Player.CanControlCharacter = true;
-                if ( this._nearestATM != null )
-                {
-                    this._nearestATM.Dispose();
-                    this._nearestATM = null;
-                }
-                foreach ( Blip blip in this._atmBlips )
-                {
-                    if ( blip != null && blip.Exists() )
-                    {
-                        blip.Remove();
-                    }
-                }
+                return;
+            }
+            Game.Player.CanControlCharacter = true;
+            if ( this._nearestATM != null )
+            {
+                this._nearestATM.Dispose();
+                this._nearestATM = null;
+            }
+            foreach ( Blip blip in this._atmBlips.Where( blip => blip != null && blip.Exists() ) )
+            {
+                blip.Remove();
             }
         }
 
