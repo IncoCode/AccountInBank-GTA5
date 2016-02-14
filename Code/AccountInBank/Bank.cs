@@ -179,14 +179,17 @@ namespace AccountInBank
                 this.ServiceTax( i );
                 int interest = (int)Math.Round( account.Balance * this._percentsPerDay );
                 account.InterestDate = currDate;
-                if ( (double)account.Balance + interest > int.MaxValue || interest < 0 )
+                if ( (double)account.Balance + interest > int.MaxValue || interest <= 0 )
                 {
                     continue;
                 }
                 account.Balance = account.Balance + interest;
                 if ( Helper.GetPlayerIndex() == i && interest > 0 )
                 {
-                    UI.Notify( "Interest accrued: $" + interest );
+                    string interestStr = this._mySettings.HumanReadableNumber
+                        ? Helper.ToReadableNumber( interest )
+                        : interest.ToString();
+                    UI.Notify( "Interest accrued: $" + interestStr );
                 }
             }
             this.SaveSettings();

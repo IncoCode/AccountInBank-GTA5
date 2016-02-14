@@ -19,6 +19,7 @@ namespace AccountInBank
         public bool LoseCashOnArrest { get; private set; }
         public bool ShowAllATMLocations { get; private set; }
         public bool EnableAnimation { get; private set; }
+        public bool HumanReadableNumber { get; private set; }
 
         public bool EnableDepositTax { get; private set; }
         public string DepositTax { get; private set; }
@@ -45,6 +46,7 @@ namespace AccountInBank
             this.LoseCashOnArrest = this._settings.Read( "LoseCashOnArrest", "Settings", false );
             this.ShowAllATMLocations = this._settings.Read( "ShowAllATMLocations", "Settings", false );
             this.EnableAnimation = this._settings.Read( "EnableAnimation", "Settings", false );
+            this.HumanReadableNumber = this._settings.Read( "HumanReadableNumber", "Settings", true );
 
             this.EnableDepositTax = this._settings.Read( "EnableDepositTax", "Taxes", true );
             this.EnableWithdrawalTax = this._settings.Read( "EnableWithdrawalTax", "Taxes", true );

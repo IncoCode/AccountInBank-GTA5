@@ -47,7 +47,10 @@ namespace AccountInBank
                 {
                     AccountInBankAnimation.PlayChooseAnimationWaitPlayIdle();
                 }
-                UI.Notify( "Balance: $" + this._bank.Balance, true );
+                string balanceStr = this._mySettings.HumanReadableNumber
+                    ? Helper.ToReadableNumber( this._bank.Balance )
+                    : this._bank.Balance.ToString();
+                UI.Notify( "Balance: $" + balanceStr, true );
             };
 
             var depositBtn = new UIMenuItem( "Deposit" );
@@ -124,11 +127,6 @@ namespace AccountInBank
                 menu.GoBack();
             };
             return menu;
-        }
-
-        private void CreateMenus()
-        {
-            this.CreateMainMenu();
         }
 
         #endregion
