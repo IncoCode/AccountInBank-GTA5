@@ -25,7 +25,7 @@ namespace AccountInBank
     {
         public static ATM[] GetAllATMs()
         {
-            var list = new List<ATM>
+            return new[]
             {
                 new ATM( new Vector3( -1109.797f, -1690.808f, 4.375014f ), 122.9616f, false ),
                 new ATM( new Vector3( -821.6062f, -1081.885f, 11.13243f ), 29.3056f, false ),
@@ -75,8 +75,6 @@ namespace AccountInBank
                 new ATM( new Vector3( -1409.782f, -100.410f, 52.387f ), 109.271f, false ),
                 new ATM( new Vector3( -1410.279f, -98.649f, 52.436f ), 112.710f, false ),
             };
-
-            return list.ToArray();
         }
 
         /// <summary>
@@ -134,7 +132,7 @@ namespace AccountInBank
 
         public static Keys StringToKey( string key, Keys defaultValue )
         {
-            if ( string.IsNullOrEmpty( key ) || key.Length == 0 )
+            if ( string.IsNullOrEmpty( key ) )
             {
                 return defaultValue;
             }
