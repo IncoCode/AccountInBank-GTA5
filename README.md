@@ -21,7 +21,7 @@ Requirements
 - Microsoft [.NET Framework ≥ 4.5.2](https://www.microsoft.com/download/details.aspx?id=30653);
 - Microsoft [Visual C++ Redistributable Package for Visual Studio 2013 (x64)](https://www.microsoft.com/download/details.aspx?id=40784);
 - [Script Hook V](http://gtaforums.com/topic/788343-script-hook-v/);
-- [Community Script Hook V .NET ≥ v2.9.3](https://github.com/crosire/scripthookvdotnet/releases/tag/v2.9.3);
+- [Community Script Hook V .NET ≥ v2.10.8](https://github.com/crosire/scripthookvdotnet/releases/tag/v2.9.3);
 - [NativeUI Library](http://gtaforums.com/topic/809284-net-nativeui/).
 
 How to install
@@ -31,7 +31,7 @@ Place the .dll and .ini files into your "**scripts**" folder, located in the mai
 
 Known issues
 --------------
-Don't type numbers using your numpad. Sometimes it's works incorrect.
+Don't type numbers using your numpad. Sometimes it works incorrect.
 
 Settings
 --------------
@@ -40,15 +40,15 @@ Settings
 Setting name | Valid values | Description
 --- | --- | ---
 MarkATMKey | [Look here](https://msdn.microsoft.com/en-us/library/system.windows.forms.keys(v=vs.110).aspx) | The key which marks the nearest ATM on the map
-OpenATMMenuKey | [Look here](https://msdn.microsoft.com/en-us/library/system.windows.forms.keys(v=vs.110).aspx) | The key which open ATM menu if you are near some ATM
+OpenATMMenuKey | [Look here](https://msdn.microsoft.com/en-us/library/system.windows.forms.keys(v=vs.110).aspx) | The key which opens ATM menu if you are near some ATM
 LoseCashOnDeath | True / False | Lose all cash when you die
 LoseCashOnArrest | True / False | Lose all cash when you get arrested
 ShowAllATMLocations | True / False | Show all ATM locations on the map
 EnableAnimation | True / False | Enable playback of animation
-EnableDepositTax | True / False | Enables tax on new deposits
-EnableWithdrawalTax | True / False | Enables tax on withdrawals
-EnableServiceTax | True / False | Enables service tax (debited every day)
-EnableMoneyTransferTax | True / False | Enables tax on the amount of transfer between the characters
+EnableDepositTax | True / False | Enable tax on new deposits
+EnableWithdrawalTax | True / False | Enable tax on withdrawals
+EnableServiceTax | True / False | Enable service tax (debited every day)
+EnableMoneyTransferTax | True / False | Enable tax on the amount of transfer between the characters
 DepositTax | Number or percent. E.g. 4500 or 3% | -
 WithdrawalTax | Number or percent. E.g. 4732 or 5% | -
 ServiceTax | Number or percent. E.g. 125 or 0.5% | -
@@ -56,10 +56,13 @@ MoneyTransferTax | Number or percent. E.g. 15021 or 2% | -
 
 ATM location
 --------------
-If you found ATM that not exists in the list - let me know.
+If you found ATM that don't exist in the list - let me know.
 
 Changelog
 --------------
+v1.1.7
+- Update .NET ScriptHook and NativeUI to the latest versions.
+
 v1.1.6
 - Update .NET ScriptHook and NativeUI to the latest versions;
 - Add new ATM location.
