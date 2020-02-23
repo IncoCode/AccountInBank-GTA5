@@ -1,12 +1,12 @@
 ﻿#region Using
 
-using System;
-using System.Globalization;
-using System.Windows.Forms;
 using AccountInBank.Model;
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using System;
+using System.Globalization;
+using System.Windows.Forms;
 
 #endregion
 

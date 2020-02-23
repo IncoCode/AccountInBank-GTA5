@@ -1,11 +1,11 @@
 ﻿#region Using
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AccountInBank.Model;
 using GTA;
 using Ini;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 #endregion
 
@@ -186,7 +186,7 @@ namespace AccountInBank
                 account.Balance = account.Balance + interest;
                 if ( Helper.GetPlayerIndex() == i && interest > 0 )
                 {
-                    UI.Notify( "Interest accrued: $" + interest );
+                    GTA.UI.Notification.Show( "Interest accrued: $" + interest );
                 }
             }
             this.SaveSettings();
@@ -211,7 +211,7 @@ namespace AccountInBank
             account.Balance -= tax;
             if ( Helper.GetPlayerIndex() == index && tax > 0 )
             {
-                UI.Notify( "Service tax: $" + tax );
+                GTA.UI.Notification.Show( "Service tax: $" + tax );
             }
         }
 

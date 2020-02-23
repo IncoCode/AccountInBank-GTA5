@@ -1,9 +1,9 @@
 ﻿#region Using
 
-using System;
-using System.Linq;
 using GTA;
 using NativeUI;
+using System;
+using System.Linq;
 
 #endregion
 
@@ -47,7 +47,7 @@ namespace AccountInBank
                 {
                     AccountInBankAnimation.PlayChooseAnimationWaitPlayIdle();
                 }
-                UI.Notify( "Balance: $" + this._bank.Balance, true );
+                GTA.UI.Notification.Show( "Balance: $" + this._bank.Balance, true );
             };
 
             var depositBtn = new UIMenuItem( "Deposit" );
@@ -109,7 +109,7 @@ namespace AccountInBank
             menu.AddItem( nextBtn );
             nextBtn.Activated += ( sender, item ) =>
             {
-                string valueS = Game.GetUserInput( 9 );
+                string valueS = Game.GetUserInput( new WindowTitle(), "", 9 );
                 string status = "Operation \"Withdrawal\": ~g~Success!";
                 try
                 {
@@ -120,7 +120,7 @@ namespace AccountInBank
                 {
                     status = $"Operation \"Withdrawal\": ~r~Failed!~n~Error: {exception.Message}";
                 }
-                UI.Notify( status );
+                GTA.UI.Notification.Show( status );
                 menu.GoBack();
             };
             return menu;
@@ -141,7 +141,7 @@ namespace AccountInBank
 
         private void ATMBalanceActionMenuClick( ATMBalanceAction action )
         {
-            string valueS = Game.GetUserInput( 9 );
+            string valueS = Game.GetUserInput( new WindowTitle(), "", 9 );
             string status = $"Operation \"{action}\": ~g~Success!";
             try
             {
@@ -163,7 +163,7 @@ namespace AccountInBank
             {
                 status = $"Operation \"{action}\": ~r~Failed!~n~Error: {exception.Message}";
             }
-            UI.Notify( status );
+            GTA.UI.Notification.Show( status );
         }
     }
 }

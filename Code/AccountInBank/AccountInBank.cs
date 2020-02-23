@@ -1,12 +1,12 @@
 ﻿#region Using
 
+using AccountInBank.Model;
+using GTA;
+using Ini;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using AccountInBank.Model;
-using GTA;
-using Ini;
 
 #endregion
 
@@ -45,14 +45,12 @@ namespace AccountInBank
             {
                 this.PrintAllBlips();
             }
+
+            this.Aborted += this.AccountInBank_Aborted;
         }
 
-        protected override void Dispose( bool disposing )
+        private void AccountInBank_Aborted( object sender, EventArgs e )
         {
-            if ( !disposing )
-            {
-                return;
-            }
             Game.Player.CanControlCharacter = true;
             if ( this._nearestATM != null )
             {
@@ -61,7 +59,7 @@ namespace AccountInBank
             }
             foreach ( Blip blip in this._atmBlips.Where( blip => blip != null && blip.Exists() ) )
             {
-                blip.Remove();
+                blip.Delete();
             }
         }
 
@@ -77,6 +75,7 @@ namespace AccountInBank
         {
             if ( this._mySettings.EnableAnimation )
             {
+
                 AccountInBankAnimation.PlayExitAnimation();
                 Wait( 6500 );
             }
@@ -98,7 +97,7 @@ namespace AccountInBank
                 {
                     charStats.Arrests = arrests;
                     Game.Player.Money = 0;
-                    UI.Notify( "Oh, no! You lost all your cash!" );
+                    GTA.UI.Notification.Show( "Oh, no! You lost all your cash!" );
                 }
             }
             if ( this._mySettings.LoseCashOnDeath )
@@ -108,7 +107,7 @@ namespace AccountInBank
                 {
                     charStats.Deaths = deaths;
                     Game.Player.Money = 0;
-                    UI.Notify( "Oh, no! You lost all your cash!" );
+                    GTA.UI.Notification.Show( "Oh, no! You lost all your cash!" );
                 }
             }
         }

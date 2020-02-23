@@ -55,7 +55,7 @@ namespace AccountInBank.Model
                 {
                     if ( this.Blip != null && this.Blip.Exists() )
                     {
-                        this.Blip.Remove();
+                        this.Blip.Delete();
                     }
                 }
             }
