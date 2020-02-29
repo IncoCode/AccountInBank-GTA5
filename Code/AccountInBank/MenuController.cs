@@ -21,6 +21,7 @@ namespace AccountInBank
         private readonly MenuPool _menuPool;
         private readonly MySettings _mySettings;
         private UIMenu _mainMenu;
+        private bool _wasMenuOpen = false;
 
         public event EventHandler<EventArgs> MenuClosed;
 
@@ -34,6 +35,11 @@ namespace AccountInBank
         public void Tick()
         {
             this._menuPool.ProcessMenus();
+            if ( this._wasMenuOpen && !this._menuPool.IsAnyMenuOpen() )
+            {
+                this._wasMenuOpen = false;
+                this.MenuClosed?.Invoke( this, new EventArgs() );
+            }
         }
 
         #region Create Menus
@@ -78,15 +84,7 @@ namespace AccountInBank
             menu.AddItem( depositBtn );
             menu.AddItem( withdrawalBtn );
             menu.AddItem( moneyTransferBtn );
-            menu.OnMenuClose += sender =>
-            {
-                // fire OnClose event
-                var onMenuClosed = this.MenuClosed;
-                onMenuClosed?.Invoke( this, new EventArgs() );
-            };
-            menu.BindMenuToItem( moneyTransferMenu, moneyTransferBtn );
             menu.RefreshIndex();
-            menu.Visible = false;
 
             this._mainMenu = menu;
             this._menuPool.Add( this._mainMenu );
@@ -126,17 +124,13 @@ namespace AccountInBank
             return menu;
         }
 
-        private void CreateMenus()
-        {
-            this.CreateMainMenu();
-        }
-
         #endregion
 
         public void ShowBankMenu()
         {
             this.CreateMainMenu();
             this._mainMenu.Visible = true;
+            this._wasMenuOpen = true;
         }
 
         private void ATMBalanceActionMenuClick( ATMBalanceAction action )
