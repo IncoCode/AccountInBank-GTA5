@@ -60,6 +60,9 @@ If you found ATM that don't exist in the list - let me know.
 
 Changelog
 --------------
+v2.0.1
+- Fix bug with flashing menu
+
 v2.0.0
 - Update .NET ScriptHook to the v3.
 
