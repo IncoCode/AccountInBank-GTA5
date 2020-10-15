@@ -21,7 +21,7 @@ Requirements
 - Microsoft [.NET Framework ≥ 4.8](https://dotnet.microsoft.com/download/dotnet-framework/net48);
 - Microsoft [Visual C++ Redistributable for Visual Studio 2019 x64](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads);
 - [Script Hook V](http://gtaforums.com/topic/788343-script-hook-v/);
-- [Community Script Hook V .NET ≥ v3.0.3](https://github.com/crosire/scripthookvdotnet/releases/tag/v3.0.3);
+- [Community Script Hook V .NET ≥ v3.0.4](https://github.com/crosire/scripthookvdotnet/releases/tag/v3.0.4);
 - [NativeUI Library](http://gtaforums.com/topic/809284-net-nativeui/).
 
 How to install
@@ -60,6 +60,9 @@ If you found ATM that don't exist in the list - let me know.
 
 Changelog
 --------------
+v2.0.2
+- Fix bug with money transfer menu
+
 v2.0.1
 - Fix bug with flashing menu
 
