@@ -84,6 +84,7 @@ namespace AccountInBank
             menu.AddItem( depositBtn );
             menu.AddItem( withdrawalBtn );
             menu.AddItem( moneyTransferBtn );
+            menu.BindMenuToItem( moneyTransferMenu, moneyTransferBtn );
             menu.RefreshIndex();
 
             this._mainMenu = menu;
